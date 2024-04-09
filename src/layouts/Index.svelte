@@ -19,10 +19,12 @@
         <Header />
 
         <Router url="admin">
-            <Route path="projects" let:params>
+            <Route path="projects">
                 <ProjectList />
             </Route>
-            <Route path="projects/:id" component={ProjectDetail} />
+            <Route path="projects/:id" let:params>
+                <ProjectDetail id={params.id} />
+            </Route>
             <Route path="files" component={FileList} />
             <Route path="settings" component={SettingsPage} />
             <Route path="query" component={Query} />

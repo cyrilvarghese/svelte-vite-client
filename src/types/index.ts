@@ -9,6 +9,7 @@ export interface Tag {
 export interface File {
     id: number;
     name: string;
+    created_at: string;
 }
 
 export interface JobDetail {

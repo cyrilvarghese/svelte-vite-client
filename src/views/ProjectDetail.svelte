@@ -8,9 +8,11 @@
     import * as Tabs from "$lib/components/ui/tabs/index.js";
     import * as Card from "$lib/components/ui/card/index.js";
     import { Button } from "$lib/components/ui/button/index.js";
-    import { Plus } from "lucide-svelte";
+    import { FileUp, Plus, Upload, FileText } from "lucide-svelte";
+    import FileItem from "../molecules/FileItem.svelte";
+    import { ScrollArea } from "$lib/components/ui/scroll-area";
 
-    export const id = 1; // Assume this could be dynamic
+    export let id = ""; // Assume this could be dynamic
     let project: Project | null = null;
     let isLoading = false;
     let error: Error | null = null;
@@ -42,7 +44,7 @@
         <Tabs.Root value="account" class="w-[400px]">
             <Tabs.List class="grid w-full grid-cols-2">
                 <Tabs.Trigger value="account">Jobs</Tabs.Trigger>
-                <Tabs.Trigger value="password">Files</Tabs.Trigger>
+                <Tabs.Trigger value="files">Files</Tabs.Trigger>
             </Tabs.List>
             <Tabs.Content value="account">
                 <Card.Root>
@@ -52,16 +54,16 @@
                             Listed below are jobs previously created, or create
                             a new one.
                         </Card.Description>
-                        <Button class="w-[200px]">
-                            <Plus />
+                        <Button class="w-[150px]">
+                            <Plus class="mr-2" />
                             Add New Job</Button
                         >
                     </Card.Header>
-                    <Card.Content class="space-y-2">
+                    <Card.Content class="space-y-2 pb-4">
                         <div
                             class="flex flex-1 items-start justify-start rounded-lg shadow-sm"
                         >
-                            <div class=" flex flex-col gap-2">
+                            <div class=" flex flex-col">
                                 {#each project.jobs as job (job.id)}
                                     <Job
                                         jobName={job.name}
@@ -74,6 +76,42 @@
                         </div>
                     </Card.Content>
                     <Card.Footer>Last updated on 25th April</Card.Footer>
+                </Card.Root>
+            </Tabs.Content>
+            <Tabs.Content value="files">
+                <Card.Root>
+                    {#await projects.fetchProjectFiles(+id)}
+                        <!-- promise is pending -->
+                        <p class="animate-bounce">Loading Project Files..</p>
+                    {:then files}
+                        <!-- promise was fulfilled -->
+                        <Card.Header>
+                            <Card.Title>Files</Card.Title>
+                            <Card.Description>
+                                View tags from files from all the tagging jobs
+                                completed, or upload a new file
+                            </Card.Description>
+                            <Button class="w-[150px]">
+                                <FileUp class="mr-2" />
+                                Upload File</Button
+                            >
+                        </Card.Header>
+                        <Card.Content class="space-y-2 pb-2">
+                            <ScrollArea class="h-56">
+                                <div
+                                    class="flex items-start justify-start rounded-lg shadow-sm"
+                                >
+                                    <div class=" flex flex-col items-start">
+                                        {#each files as file (file.id)}
+                                            <FileItem {file} />
+                                            <!-- More job details here -->
+                                        {/each}
+                                    </div>
+                                </div>
+                            </ScrollArea>
+                        </Card.Content>
+                        <Card.Footer>{files.length} Files</Card.Footer>
+                    {/await}
                 </Card.Root>
             </Tabs.Content>
         </Tabs.Root>

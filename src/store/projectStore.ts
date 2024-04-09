@@ -1,4 +1,4 @@
-import type { Project } from 'src/types';
+import type { Project, File, JobDetail } from 'src/types';
 import { writable, type Writable } from 'svelte/store';
 const BASE_URL = "http://localhost:8000/api"
 
@@ -58,11 +58,28 @@ function createProjectsStore() {
         }
     }
 
+
+    async function fetchProjectFiles(projectId: number): Promise<File[]> {
+        try {
+            const response = await fetch(`${BASE_URL}/projects/${projectId}/files`);
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+            const files:File[] = await response.json();
+            // You might want to do something with the files, like setting them to a store or returning them.
+            return files; // This is just a placeholder action.
+        } catch (error) {
+            console.error("Failed to fetch project files:", error);
+            throw error;
+        }
+    }
+
     return {
         subscribe,
         fetchProjects,
         fetchJobDetails, // Include the new method in the returned object
         fetchProjectById, // Including fetchProjectById method
+        fetchProjectFiles, // Including get files
     };
 }
 
