@@ -13,7 +13,7 @@
         Settings,
     } from "lucide-svelte";
     import { Input } from "$lib/components/ui/input";
-    import Searchbox from "./Searchbox.svelte";
+    import Searchbox from "./search-box.svelte";
 </script>
 
 <header

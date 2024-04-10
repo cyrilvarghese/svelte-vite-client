@@ -10,6 +10,7 @@
         MousePointerClick,
         Settings,
     } from "lucide-svelte";
+    
 </script>
 
 <div class="hidden border-r bg-muted/40 md:block">
@@ -30,7 +31,7 @@
                 class="grid items-start px-2 text-sm font-medium lg:px-4"
             >
                 <Router>
-                    <Link to="/projects" let:active>
+                    <Link to="/projects/" let:active>
                         <span
                             class="flex items-center
                                 gap-3 rounded-lg px-3 py-2

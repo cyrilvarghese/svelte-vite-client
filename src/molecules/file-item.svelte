@@ -5,7 +5,7 @@
     import type { File, Project } from "src/types";
     import { FileText } from "lucide-svelte";
 
-    let checked: boolean | "indeterminate" | undefined;
+    export let checked: boolean | "indeterminate" | undefined;
     /**
      * Determines the variant of the component, which affects its styling and potentially its behavior.
      * - "simple" for a basic variant without additional features.

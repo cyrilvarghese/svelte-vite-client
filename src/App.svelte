@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Router, Route } from "svelte-routing";
-  import Index from "./layouts/Index.svelte";
+  import Index from "./layouts/index.svelte";
   export let url = "";
 </script>
 

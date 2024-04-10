@@ -1,6 +1,6 @@
 <script lang="ts">
     import { Button } from "$lib/components/ui/button";
-    import ProjectCard from "../molecules/ProjectCard.svelte";
+    import ProjectCard from "../molecules/project-card.svelte";
     import { onMount } from "svelte";
     import { projects } from "../store/projectStore";
     import { Link } from "svelte-routing";

@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { File } from "../types";
-    import FileItem from "../molecules/FileItem.svelte";
+    import FileItem from "../molecules/file-item.svelte";
     export let files:File[]=[]
 </script>
 
