@@ -8,9 +8,10 @@
     import * as Tabs from "$lib/components/ui/tabs/index.js";
     import * as Card from "$lib/components/ui/card/index.js";
     import { Button } from "$lib/components/ui/button/index.js";
-    import { FileUp, Plus, Upload, FileText } from "lucide-svelte";
+    import { FileUp, Plus, Upload, FileText, Search } from "lucide-svelte";
     import FileItem from "../molecules/FileItem.svelte";
     import { ScrollArea } from "$lib/components/ui/scroll-area";
+    import FilesList from "./FilesList.svelte";
 
     export let id = ""; // Assume this could be dynamic
     let project: Project | null = null;
@@ -30,10 +31,10 @@
     });
 </script>
 
-<main class="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+<main class="flex flex-1 flex-col gap-4 p-4 lg:p-6">
     {#await projects.fetchProjectById(+id)}
         <div class="flex flex-col items-start pl-0 p-12 h-full">
-            <p class="mb-4">Loading Project</p>
+            <p class="mb-4 animate-pulse">Loading Project</p>
             <Progress {value} max={100} class="h-1 w-[100%]" />
         </div>
     {:then project}
@@ -49,14 +50,16 @@
             <Tabs.Content value="account">
                 <Card.Root>
                     <Card.Header>
-                        <Card.Title>Jobs</Card.Title>
+                        <Card.Title>  <div class="flex flex-row items-end  ">
+                            Jobs
+                           <Search class="ml-2 h-4 w-4 text-muted-foreground" />
+                       </div ></Card.Title>
                         <Card.Description>
-                            Listed below are jobs previously created, or create
-                            a new one.
+                            List of tagging for the project
                         </Card.Description>
                         <Button class="w-[150px]">
                             <Plus class="mr-2" />
-                            Add New Job</Button
+                            Add Job</Button
                         >
                     </Card.Header>
                     <Card.Content class="space-y-2 pb-4">
@@ -86,26 +89,29 @@
                     {:then files}
                         <!-- promise was fulfilled -->
                         <Card.Header>
-                            <Card.Title>Files</Card.Title>
+                            <Card.Title
+                                >
+                                <div class="flex flex-row items-end  ">
+                                     Files
+                                    <Search class="ml-2 h-4 w-4 text-muted-foreground" />
+                                </div >
+                              
+                            </Card.Title>
                             <Card.Description>
-                                View tags from files from all the tagging jobs
-                                completed, or upload a new file
+                               List of files for the project
                             </Card.Description>
                             <Button class="w-[150px]">
                                 <FileUp class="mr-2" />
-                                Upload File</Button
+                                Upload</Button
                             >
                         </Card.Header>
-                        <Card.Content class="space-y-2 pb-2">
-                            <ScrollArea class="h-56">
+                        <Card.Content class="space-y-2 pb-2  ">
+                            <ScrollArea class="h-full">
                                 <div
                                     class="flex items-start justify-start rounded-lg shadow-sm"
                                 >
                                     <div class=" flex flex-col items-start">
-                                        {#each files as file (file.id)}
-                                            <FileItem {file} />
-                                            <!-- More job details here -->
-                                        {/each}
+                                        <FilesList {files} />
                                     </div>
                                 </div>
                             </ScrollArea>
@@ -116,6 +122,6 @@
             </Tabs.Content>
         </Tabs.Root>
     {:catch error}
-        <p>Error loading project: {error.message}</p>
+        <p class="pl-4">Error loading project: {error.message}</p>
     {/await}
 </main>

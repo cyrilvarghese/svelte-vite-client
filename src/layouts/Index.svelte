@@ -3,7 +3,7 @@
     import SettingsPage from "../views/Settings.svelte";
     import Header from "../molecules/Header.svelte";
     import Sidebar from "../molecules/Sidebar.svelte";
-    import FileList from "../views/FileList.svelte";
+    import FileList from "../views/FilesView.svelte";
     import Query from "../views/Query.svelte";
     import ProjectDetail from "../views/ProjectDetail.svelte";
     import ProjectList from "../views/ProjectList.svelte";

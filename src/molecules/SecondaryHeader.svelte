@@ -5,7 +5,7 @@
     export let pageDescription: string = "";
 </script>
 
-<div class="mt-2">
+<div  >
     <Breadcrumb.Root>
         <Breadcrumb.List>
             <Breadcrumb.Item>
@@ -19,5 +19,5 @@
 </div>
 <div class="flex  flex-col items-start">
     <h1 class="text-lg font-semibold md:text-2xl">{pageTitle}</h1>
-    <p class="text-lg text-muted-foreground">{pageDescription}</p>
+    <p class="text-sm text-muted-foreground">{pageDescription}</p>
 </div>

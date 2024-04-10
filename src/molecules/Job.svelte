@@ -4,6 +4,7 @@
     import { Button } from "$lib/components/ui/button/index.js";
     import { projects } from "../store/projectStore"; // importing the store from projectStore.js
     import type { Job, JobDetail } from "src/types";
+    import FileItem from "./FileItem.svelte";
 
     export let jobId = 1;
     export let projectId = 1;
@@ -46,19 +47,14 @@
     <Collapsible.Content class="space-y-2 pb-3">
         {#if jobDetail}
             {#each jobDetail.files as file}
-                <div
-                    class="rounded-md  flex flex-row flex-start items-center border align-baseline px-4 py-3 font-mono text-sm w-[320px]"
-                >
-                    <FileText  class="mr-2"/>
-                    {file.name}
-                </div>
+                <FileItem variant="simple" {file} />
             {/each}
         {:else if loading}
-            <p>Loading details...</p>
+            <p class="pl-4 animate-pulse">Loading details...</p>
         {:else if error}
-            <p>Error loading job details: {error.message}</p>
+            <p class="pl-4">Error loading job details: {error.message}</p>
         {:else}
-            <p>No job details available.</p>
+            <p class="pl-4">No job details available.</p>
         {/if}
     </Collapsible.Content>
 </Collapsible.Root>
