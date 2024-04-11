@@ -6,7 +6,7 @@
     import FileList from "../views/files-page.svelte";
     import Query from "../views/query-page.svelte";
     import ProjectDetail from "../views/project-detail.svelte";
-    import ProjectList from "../views/project-list.svelte";
+    import ProjectList from "../views/project-page.svelte";
     import ChunksList from "../views/chunks-container.svelte";
     import Test from "../views/test.svelte";
 
@@ -20,7 +20,7 @@
     <div class="flex flex-col">
         <Header />
 
-        <Router url="admin">
+        <Router url="">
             <Route path="projects">
                 <ProjectList />
             </Route>

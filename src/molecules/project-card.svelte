@@ -10,6 +10,7 @@
         Tag,
         Tags,
         ListCollapse,
+        Trash2,
     } from "lucide-svelte";
     import { Button } from "$lib/components/ui/button";
     import * as Card from "$lib/components/ui/card";
@@ -59,18 +60,20 @@
                                 />
                             </Button>
                         </DropdownMenu.Trigger>
+                        
                         <DropdownMenu.Content class="w-[200px]" align="end">
-                            <DropdownMenu.Item>
-                                <Edit class="mr-2 h-4 w-4" /> Update
-                            </DropdownMenu.Item>
-                            <DropdownMenu.Item>
-                                <Tags class="mr-2 h-4 w-4" /> View Tagging Jobs
-                            </DropdownMenu.Item>
                             <Link to="/projects/{id}" let:active>
                                 <DropdownMenu.Item>
                                     <ListCollapse class="mr-2 h-4 w-4" /> View Project
                                 </DropdownMenu.Item>
                             </Link>
+                            <DropdownMenu.Item on:click={onEdit}> 
+                                <Edit class="mr-2 h-4 w-4" /> Update
+                            </DropdownMenu.Item>
+                            <DropdownMenu.Item on:click={onDelete}> 
+                                <Trash2 class="mr-2 h-4 w-4" /> Delete
+                            </DropdownMenu.Item>
+                         
                         </DropdownMenu.Content>
                     </DropdownMenu.Root>
                 </Router>

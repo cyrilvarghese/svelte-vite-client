@@ -14,6 +14,7 @@
     import FilesList from "./file-list.svelte";
     import ChunkContainer from "./chunks-container.svelte";
     import { Separator } from "$lib/components/ui/separator";
+    import AddJob from "./add-job.svelte";
 
     export let id = ""; // Assume this could be dynamic
     let project: Project | null = null;
@@ -52,7 +53,7 @@
                 </Tabs.List>
                 <Tabs.Content value="jobs">
                     <Card.Root>
-                        <Card.Header>
+                        <Card.Header class="items-start">
                             <Card.Title>
                                 <div class="flex flex-row items-end">
                                     Jobs
@@ -64,10 +65,8 @@
                             <Card.Description>
                                 List of tagging jobs for the project
                             </Card.Description>
-                            <Button class="w-[150px]">
-                                <Plus class="mr-2" />
-                                Add Job</Button
-                            >
+                            
+                            <AddJob />
                         </Card.Header>
                         <Card.Content class="space-y-2 pb-4">
                             <div
