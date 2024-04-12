@@ -95,7 +95,7 @@
                             <AddJob
                                 on:openChange={(e) => {
                                     debugger;
-                                    e.detail.isOpen ? "" : handleRefresh();
+                                    e.detail.open ? "" : handleRefresh();
                                 }}
                             />
                         </Card.Header>
