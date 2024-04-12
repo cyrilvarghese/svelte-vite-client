@@ -32,3 +32,8 @@ export {
 	Content as DialogContent,
 	Description as DialogDescription,
 };
+
+
+    export function Close(Close: any) {
+            throw new Error("Function not implemented.");
+        }

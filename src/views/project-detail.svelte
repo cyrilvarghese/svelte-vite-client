@@ -14,14 +14,15 @@
     import FilesList from "./file-list.svelte";
     import ChunkContainer from "./chunks-container.svelte";
     import { Separator } from "$lib/components/ui/separator";
-    import AddJob from "./add-job.svelte";
+    import AddJob from "./add-job-dialog.svelte";
 
-    export let id = ""; // Assume this could be dynamic
+    export let id = "";
     let project: Project | null = null;
     let isLoading = false;
-    let error: Error | null = null;
+    let error: Error | any;
     let value = 13;
     onMount(() => {
+        fetchData();
         const interval = setInterval(() => {
             if (value >= 100) {
                 clearInterval(interval); // Stop the interval once the value reaches 100
@@ -32,21 +33,46 @@
 
         return () => clearInterval(interval); // Cleanup the interval when the component is destroyed
     });
+    async function fetchData() {
+        isLoading = true;
+        try {
+            const newProject = await projects.fetchProjectById(+id);
+            project = newProject; // Reassigning to trigger reactivity
+        } catch (e) {
+            error = e;
+        } finally {
+            isLoading = false;
+        }
+    }
+
+    let handleRefresh = async () => {
+        isLoading = true;
+        try {
+            project = await projects.fetchProjectById(+id);
+            debugger;
+            console.log("Project data refreshed");
+        } catch (e) {
+            error = e;
+        } finally {
+            isLoading = false;
+        }
+    };
+    $: console.log(project);
 </script>
 
 <main class="flex flex-row">
     <div class="flex flex-1 flex-col gap-4 p-4 lg:p-6">
-        {#await projects.fetchProjectById(+id)}
+        {#if isLoading}
             <div class="flex flex-col items-start pl-0 p-12 h-full">
                 <p class="mb-4 animate-pulse">Loading Project</p>
                 <Progress {value} max={100} class="h-1 w-[100%]" />
             </div>
-        {:then project}
+        {:else}
             <SecondaryHeader
                 pageTitle={project?.name}
-                pageDescription={project.description}
+                pageDescription={project?.description}
             />
-            <Tabs.Root value="jobs" class="w-[400px]">
+            <Tabs.Root value="jobs" class="w-[400px] ">
                 <Tabs.List class="grid w-full grid-cols-2">
                     <Tabs.Trigger value="jobs">Jobs</Tabs.Trigger>
                     <Tabs.Trigger value="files">Files</Tabs.Trigger>
@@ -65,22 +91,29 @@
                             <Card.Description>
                                 List of tagging jobs for the project
                             </Card.Description>
-                            
-                            <AddJob />
+
+                            <AddJob
+                                on:openChange={(e) => {
+                                    debugger;
+                                    e.detail.isOpen ? "" : handleRefresh();
+                                }}
+                            />
                         </Card.Header>
                         <Card.Content class="space-y-2 pb-4">
                             <div
                                 class="flex flex-1 items-start justify-start rounded-lg shadow-sm"
                             >
                                 <div class=" flex flex-col">
-                                    {#each project.jobs as job (job.id)}
-                                        <Job
-                                            jobName={job.name}
-                                            projectId={project.id}
-                                            jobId={job.id}
-                                        />
-                                        <!-- More job details here -->
-                                    {/each}
+                                    {#if project?.jobs}
+                                        {#each project?.jobs as job}
+                                            <Job
+                                                jobName={job.name}
+                                                projectId={project?.id}
+                                                jobId={job.id}
+                                            />
+                                            <!-- More job details here -->
+                                        {/each}
+                                    {/if}
                                 </div>
                             </div>
                         </Card.Content>
@@ -129,9 +162,7 @@
                     </Card.Root>
                 </Tabs.Content>
             </Tabs.Root>
-        {:catch error}
-            <p class="pl-4">Error loading project: {error.message}</p>
-        {/await}
+        {/if}
     </div>
     <!-- <Separator class="ml-6" orientation="vertical" /> -->
     <ChunkContainer />

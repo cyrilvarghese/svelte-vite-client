@@ -20,9 +20,7 @@
 </script>
 
 <main>
-	<h2 class="text-lg font-semibold text-muted-foreground md:text-xl">
-		Relevant Chunks
-	</h2>
+	
 
 	<ScrollArea class="h-[calc(100vh-300px)] pb-4">
 		<div class="flex flex-col gap-6 p-4 pl-0 pt-4">

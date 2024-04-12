@@ -8,16 +8,36 @@
     import { Textarea } from "$lib/components/ui/textarea/index.js";
     import { Label } from "$lib/components/ui/label/index.js";
     import ChunkList from "../molecules/chunk-list.svelte";
+    import * as Tabs from "$lib/components/ui/tabs/index.js";
 </script>
 
 <div class="grid h-[calc(100vh-60px)] w-full">
     <div class="flex flex-col">
-        <main class="flex flex-1 flex-col gap-4 p-4   pt-0">
+        <main class="flex flex-1 flex-col gap-4 p-4 pt-0">
             <div
-                class="relative flex h-full min-h-[50vh] flex-col my-4 rounded-xl bg-muted/50  p-4 pt-12 lg:col-span-2"
+                class="relative flex h-full min-h-[50vh] flex-col my-4 rounded-xl bg-muted/50 p-4 lg:col-span-2"
             >
-                <ChunkList />
-
+                <h2
+                    class="text-lg font-semibold text-muted-foreground md:text-xl pb-4"
+                >
+                    Relevant Chunks
+                </h2>
+                <Tabs.Root value="all">
+                    <Tabs.List class="grid grid-cols-3 w-[300]">
+                        <Tabs.Trigger value="all">All Chunks</Tabs.Trigger>
+                        <Tabs.Trigger value="review">Under Review</Tabs.Trigger>
+                        <Tabs.Trigger value="approved">Approved</Tabs.Trigger>
+                    </Tabs.List>
+                    <Tabs.Content value="all">
+                        <ChunkList />
+                    </Tabs.Content>
+                    <Tabs.Content value="review">
+                        <ChunkList />
+                    </Tabs.Content>
+                    <Tabs.Content value="approved">
+                        <ChunkList />
+                    </Tabs.Content>
+                </Tabs.Root>
                 <div class="flex-1" />
                 <form
                     class="relative overflow-hidden rounded-lg border bg-background focus-within:ring-1 focus-within:ring-ring"

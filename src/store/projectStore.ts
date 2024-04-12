@@ -1,4 +1,4 @@
-import type { Project, File, JobDetail } from 'src/types';
+import type { Project, File, JobDetail, Tag } from 'src/types';
 import { writable, type Writable } from 'svelte/store';
 const BASE_URL = "http://localhost:8000/api"
 
@@ -65,7 +65,7 @@ function createProjectsStore() {
             if (!response.ok) {
                 throw new Error(`Error: ${response.statusText}`);
             }
-            const files:File[] = await response.json();
+            const files: File[] = await response.json();
             // You might want to do something with the files, like setting them to a store or returning them.
             return files; // This is just a placeholder action.
         } catch (error) {
@@ -74,12 +74,54 @@ function createProjectsStore() {
         }
     }
 
+    async function fetchTagsByProject(projectId: number): Promise<Tag[]> {
+        try {
+            const response = await fetch(`${BASE_URL}/projects/${projectId}/tags`);
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+            const tags: Tag[] = await response.json();
+            return tags;
+        } catch (error) {
+            console.error("Failed to fetch tags:", error);
+            throw error;
+        }
+    }
+    async function createJobWithFiles(projectId: number, name: string, description: string, files: FileList): Promise<void> {
+        const formData = new FormData();
+        formData.append('project_id', projectId.toString());
+        formData.append('name', name);
+        formData.append('description', description);
+        for (let i = 0; i < files.length; i++) {
+            formData.append('files', files[i]);
+        }
+
+        try {
+            const response = await fetch(`${BASE_URL}/jobs/`, {
+                method: 'POST',
+                body: formData
+            });
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+            const result = await response.json();
+            console.log("Job and files created successfully:", result);
+        } catch (error) {
+            console.error("Failed to create job and files:", error);
+            throw error;
+        }
+    }
+
+
+
     return {
         subscribe,
         fetchProjects,
-        fetchJobDetails, // Include the new method in the returned object
-        fetchProjectById, // Including fetchProjectById method
-        fetchProjectFiles, // Including get files
+        fetchJobDetails,
+        fetchProjectById,
+        fetchProjectFiles,
+        createJobWithFiles,
+        fetchTagsByProject  
     };
 }
 
