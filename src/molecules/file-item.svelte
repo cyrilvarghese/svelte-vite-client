@@ -4,8 +4,12 @@
     import { Label } from "$lib/components/ui/label";
     import type { File, Project } from "src/types";
     import { FileText } from "lucide-svelte";
+    import { projects } from "../store/projectStore"; // importing the store from projectStore.js
+    import { createEventDispatcher } from "svelte";
 
-    export let checked: boolean | "indeterminate" | undefined;
+    export let checked: boolean | "indeterminate" | undefined = false;
+    const dispatch = createEventDispatcher();
+
     /**
      * Determines the variant of the component, which affects its styling and potentially its behavior.
      * - "simple" for a basic variant without additional features.
@@ -24,10 +28,24 @@
         console.log(isChecked);
         checked = isChecked;
     }
-    const fileItemClicked = function () {
-        console.log(file.id)
+    const fileItemClicked = async function () {
+        console.log(file.id);
         checked = !checked;
-       
+        // Update the list of selected filenames
+        projects.selectedFileNames.update((currentNames) => {
+            const index = currentNames.indexOf(file.name);
+            if (index > -1) {
+                currentNames.splice(index, 1); // Remove if exists
+            } else {
+                currentNames.push(file.name); // Add if not exists
+            }
+
+            // dispatch("getChunksByFilenames", { fileNames: currentNames });
+            return currentNames;
+        });
+
+        //maintain a list of selected items
+        //call the store methods with new list of selctedfilenames
     };
 </script>
 
@@ -47,7 +65,7 @@
         <div class="grid gap-1.5 leading-none w-[250px]">
             <Label
                 for="file{file.id}"
-                class="text-md hover:underline font-medium leading-none  "
+                class="text-md hover:underline font-medium leading-none truncate "
             >
                 {file.name}
             </Label>
@@ -62,11 +80,11 @@
         role="button"
         tabindex="0"
         on:click={fileItemClicked}
-        class="rounded-md flex flex-row hover:bg-muted hover:underline cursor-pointer flex-start items-center border align-baseline px-4 py-3 font-mono text-sm w-[320px] mb-2 {checked
+        class="rounded-md flex flex-rowtruncate hover:bg-muted hover:underline cursor-pointer flex-start items-center border align-baseline px-4 py-3 font-mono text-sm w-[320px] mb-2 {checked
             ? 'bg-muted '
             : ''}"
     >
         <FileText class="mr-2" />
-        {file.name}
+        <p class=" w-[250px] truncate">{file.name}</p>
     </div>
 {/if}

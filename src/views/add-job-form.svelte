@@ -6,12 +6,16 @@
     import Button from "$lib/components/ui/button/button.svelte";
     import { Check } from "lucide-svelte";
     import Textarea from "$lib/components/ui/textarea/textarea.svelte";
+    import { toast } from "svelte-sonner";
+    import { createEventDispatcher } from "svelte";
 
     let projectId = 1;
     let name: string = "";
     let description: string = "";
     let files: FileList | null = null;
     let errorMessage: string = "";
+    const dispatch = createEventDispatcher();
+
     async function handleSubmit() {
         if (!files || files.length === 0) {
             errorMessage = "Please select at least one file to upload.";
@@ -24,11 +28,13 @@
                 description,
                 files,
             );
-             
+
             // Reset form or navigate away
             name = "";
             description = "";
             files = null;
+            toast.success("Job and files created successfully");
+            dispatch("closeModal");
         } catch (error: any) {
             errorMessage = `Failed to create job and files: ${error.message}`;
         }

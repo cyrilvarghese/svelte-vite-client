@@ -9,6 +9,7 @@
     import { Label } from "$lib/components/ui/label/index.js";
     import ChunkList from "../molecules/chunk-list.svelte";
     import * as Tabs from "$lib/components/ui/tabs/index.js";
+    export let chunks: any[];
 </script>
 
 <div class="grid h-[calc(100vh-60px)] w-full">
@@ -29,13 +30,13 @@
                         <Tabs.Trigger value="approved">Approved</Tabs.Trigger>
                     </Tabs.List>
                     <Tabs.Content value="all">
-                        <ChunkList />
+                        <ChunkList {chunks} />
                     </Tabs.Content>
                     <Tabs.Content value="review">
-                        <ChunkList />
+                        <ChunkList {chunks} />
                     </Tabs.Content>
                     <Tabs.Content value="approved">
-                        <ChunkList />
+                        <ChunkList {chunks} />
                     </Tabs.Content>
                 </Tabs.Root>
                 <div class="flex-1" />

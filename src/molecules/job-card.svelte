@@ -10,6 +10,7 @@
     export let projectId = 1;
     export let jobName = "";
     export let isChecked = false;
+    export let createdAt = "";
     let jobDetail: JobDetail | null = null;
     let loading = false;
     let error: Error | null = null;
@@ -52,7 +53,7 @@
     <Collapsible.Content class="space-y-2 pb-3">
         {#if jobDetail}
             {#each jobDetail.files as file}
-                <FileItem checked={isChecked} variant="simple" {file} />
+                <FileItem on:getChunksByFilenames checked={isChecked} variant="simple" {file} />
             {/each}
         {:else if loading}
             <p class="pl-4 animate-pulse">Loading details...</p>

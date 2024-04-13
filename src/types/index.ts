@@ -16,6 +16,7 @@ export interface JobDetail {
     id: number;
     name: string;
     project_id: number;
+    createdAt: string;
     tags: Tag[];
     files: File[];
 }
@@ -23,6 +24,7 @@ export interface JobDetail {
 export interface Job {
     id: number;
     name: string;
+    created_at: string;
 }
 
 export interface Project {

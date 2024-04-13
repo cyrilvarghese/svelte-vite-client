@@ -4,7 +4,7 @@
 	import { ScrollArea } from "$lib/components/ui/scroll-area";
 	import { mails } from "./data.js";
 
-	export let items = mails;
+	export let chunks: any[];
 
 	function get_badge_variant_from_label(label: string) {
 		if (["work"].includes(label.toLowerCase())) {
@@ -20,11 +20,10 @@
 </script>
 
 <main>
-	
-
 	<ScrollArea class="h-[calc(100vh-300px)] pb-4">
 		<div class="flex flex-col gap-6 p-4 pl-0 pt-4">
-			{#each [1, 2, 3, 4, 5] as item}
+			{@debug chunks}
+			{#each [1,2,3,4,5] as chunks}
 				<button
 					class={cn(
 						"flex flex-col bg-white items-start gap-2 rounded-lg shadow-sm  p-4 text-left text-sm transition-all hover:bg-accent hover:shadow",

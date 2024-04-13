@@ -7,7 +7,6 @@
     import Query from "../views/query-page.svelte";
     import ProjectDetail from "../views/project-detail.svelte";
     import ProjectList from "../views/project-page.svelte";
-    import ChunksList from "../views/chunks-container.svelte";
     import Test from "../views/add-job-form.svelte";
 
     //sidenav

@@ -1,10 +1,13 @@
 import type { Project, File, JobDetail, Tag } from 'src/types';
 import { writable, type Writable } from 'svelte/store';
 const BASE_URL = "http://localhost:8000/api"
+import { toast } from "svelte-sonner";
 
-
+export const selectedFileNames = writable<string[]>([]);
 function createProjectsStore() {
     const { subscribe, set }: Writable<Project[]> = writable([]);
+    
+
 
     async function fetchProjects(): Promise<void> {
         try {
@@ -105,13 +108,33 @@ function createProjectsStore() {
                 throw new Error(`Error: ${response.statusText}`);
             }
             const result = await response.json();
-            console.log("Job and files created successfully:", result);
+            toast.success("Job and files created successfully");
+            // console.log("Job and files created successfully:", result);
         } catch (error) {
             console.error("Failed to create job and files:", error);
             throw error;
         }
     }
 
+    async function fetchChunksByFilenames(fileNames: string[]): Promise<any[]> {
+        try {
+            const response = await fetch(`${BASE_URL}/chunks/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ fileNames })
+            });
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+            const result: any[] = await response.json();
+            return result;
+        } catch (error) {
+            console.error("Failed to process files:", error);
+            throw error;
+        }
+    }
 
 
     return {
@@ -121,7 +144,9 @@ function createProjectsStore() {
         fetchProjectById,
         fetchProjectFiles,
         createJobWithFiles,
-        fetchTagsByProject  
+        fetchTagsByProject,
+        fetchChunksByFilenames,
+        selectedFileNames
     };
 }
 

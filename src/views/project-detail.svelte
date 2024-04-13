@@ -1,6 +1,6 @@
 <script lang="ts">
     import SecondaryHeader from "../molecules/secondary-header.svelte";
-    import { projects } from "../store/projectStore";
+    import { projects, selectedFileNames } from "../store/projectStore";
     import type { Project } from "../types";
     import { Progress } from "$lib/components/ui/progress";
     import { onMount } from "svelte";
@@ -8,19 +8,19 @@
     import * as Tabs from "$lib/components/ui/tabs/index.js";
     import * as Card from "$lib/components/ui/card/index.js";
     import { Button } from "$lib/components/ui/button/index.js";
-    import { FileUp, Plus, Upload, FileText, Search } from "lucide-svelte";
-    import FileItem from "../molecules/file-item.svelte";
+    import { FileUp, Search } from "lucide-svelte";
     import { ScrollArea } from "$lib/components/ui/scroll-area";
     import FilesList from "./file-list.svelte";
     import ChunkContainer from "./chunks-container.svelte";
-    import { Separator } from "$lib/components/ui/separator";
     import AddJob from "./add-job-dialog.svelte";
 
     export let id = "";
     let project: Project | null = null;
     let isLoading = false;
+    let chunkList: any[];
     let error: Error | any;
     let value = 13;
+    let selectedFiles = $selectedFileNames;
     onMount(() => {
         fetchData();
         const interval = setInterval(() => {
@@ -36,20 +36,36 @@
     async function fetchData() {
         isLoading = true;
         try {
+            debugger;
             const newProject = await projects.fetchProjectById(+id);
             project = newProject; // Reassigning to trigger reactivity
+            const newchunkList = await projects.fetchChunksByFilenames([
+                "EDI43444.pdf",
+            ]);
+            chunkList = newchunkList; // Reassigning to trigger reactivity
         } catch (e) {
             error = e;
         } finally {
             isLoading = false;
         }
     }
-
+    async function getChunks(fileNames: string[]) {
+        isLoading = true;
+        try {
+            chunkList = await projects.fetchChunksByFilenames(fileNames);
+            debugger;
+            console.log("chunk data refreshed");
+        } catch (e) {
+            error = e;
+        } finally {
+            isLoading = false;
+        }
+    }
     let handleRefresh = async () => {
         isLoading = true;
         try {
             project = await projects.fetchProjectById(+id);
-            debugger;
+
             console.log("Project data refreshed");
         } catch (e) {
             error = e;
@@ -57,6 +73,7 @@
             isLoading = false;
         }
     };
+
     $: console.log(project);
 </script>
 
@@ -86,16 +103,15 @@
                                     <Search
                                         class="ml-2 h-4 w-4 text-muted-foreground"
                                     />
-                                </div></Card.Title
-                            >
+                                </div>
+                            </Card.Title>
                             <Card.Description>
                                 List of tagging jobs for the project
                             </Card.Description>
 
                             <AddJob
                                 on:openChange={(e) => {
-                                    debugger;
-                                    e.detail.open ? "" : handleRefresh();
+                                    e.detail.openModal ? "" : handleRefresh();
                                 }}
                             />
                         </Card.Header>
@@ -105,12 +121,21 @@
                             >
                                 <div class=" flex flex-col">
                                     {#if project?.jobs}
-                                        {#each project?.jobs as job}
+                                        {#each project?.jobs as job (job.id)}
                                             <Job
+                                                on:getChunksByFilenames={(
+                                                    e,
+                                                ) => {
+                                                    getChunks(
+                                                        e.detail.fileNames,
+                                                    );
+                                                }}
                                                 jobName={job.name}
                                                 projectId={project?.id}
                                                 jobId={job.id}
+                                                createdAt={job.created_at}
                                             />
+
                                             <!-- More job details here -->
                                         {/each}
                                     {/if}
@@ -165,5 +190,5 @@
         {/if}
     </div>
     <!-- <Separator class="ml-6" orientation="vertical" /> -->
-    <ChunkContainer />
+    <ChunkContainer chunks={chunkList} />
 </main>
