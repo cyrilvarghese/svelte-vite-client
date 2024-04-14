@@ -8,13 +8,20 @@
     import Textarea from "$lib/components/ui/textarea/textarea.svelte";
     import { toast } from "svelte-sonner";
     import { createEventDispatcher } from "svelte";
+    import { tagsList } from "../store/projectStore";
+    import type { Tag } from "src/types";
 
     let projectId = 1;
     let name: string = "";
     let description: string = "";
     let files: FileList | null = null;
     let errorMessage: string = "";
+    let docTags: Tag[];
+
     const dispatch = createEventDispatcher();
+    tagsList.subscribe((tags) => {
+        docTags = tags;
+    });
 
     async function handleSubmit() {
         if (!files || files.length === 0) {
@@ -81,16 +88,16 @@
         </div>
         <div class="grid gap-3">
             <Label for="files">Tags in the project</Label>
-            {#await projects.fetchTagsByProject(+projectId)}
-                <p class="mb-4 animate-pulse">Loading Tags</p>
-                <!-- projects.fetchTagsByProject is pending -->
-            {:then tags}
-                <BadgeList {tags} />
-                <!-- projects.fetchTagsByProject was fulfilled -->
-            {:catch error}
-                <p class="mb-4 animate-pulse">Error fetching API : {error}</p>
-                <!-- projects.fetchTagsByProject was rejected -->
-            {/await}
+             <BadgeList tags={docTags} />
+            <!-- {#await projects.fetchTagsByProject(+projectId)} -->
+            <!-- <p class="mb-4 animate-pulse">Loading Tags</p> -->
+            <!-- {:then tags} -->
+            <!-- <BadgeList {tags} /> -->
+            <!-- projects.fetchTagsByProject was fulfilled -->
+            <!-- {:catch error} -->
+            <!-- <p class="mb-4 animate-pulse">Error fetching API : {error}</p> -->
+            <!-- projects.fetchTagsByProject was rejected -->
+            <!-- {/await} -->
         </div>
     </fieldset>
     <Button type="submit" class="w-[150px]">

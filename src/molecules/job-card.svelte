@@ -53,7 +53,7 @@
     <Collapsible.Content class="space-y-2 pb-3">
         {#if jobDetail}
             {#each jobDetail.files as file}
-                <FileItem on:getChunksByFilenames checked={isChecked} variant="simple" {file} />
+                <FileItem    variant="simple" {file} />
             {/each}
         {:else if loading}
             <p class="pl-4 animate-pulse">Loading details...</p>

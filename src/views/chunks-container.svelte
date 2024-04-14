@@ -9,7 +9,37 @@
     import { Label } from "$lib/components/ui/label/index.js";
     import ChunkList from "../molecules/chunk-list.svelte";
     import * as Tabs from "$lib/components/ui/tabs/index.js";
-    export let chunks: any[];
+    import { onMount } from "svelte";
+    import { projects, selectedFileNames } from "../store/projectStore";
+
+    let chunks: any[];
+    export let projectId: number;
+    let isLoading = false;
+    let error: Error | any;
+
+    selectedFileNames.subscribe((filenames) => {
+        debugger;
+        if (filenames.length > 0) {
+            getChunks(filenames);
+        } else {
+            chunks = [];
+        }
+    });
+    async function getChunks(fileNames: string[]) {
+        isLoading = true;
+        try {
+            chunks = await projects.fetchChunksByFilenames(fileNames);
+            debugger;
+            console.log("chunk data refreshed");
+        } catch (e) {
+            error = e;
+        } finally {
+            isLoading = false;
+        }
+    }
+    onMount(() => {
+        selectedFileNames.set([]);
+    });
 </script>
 
 <div class="grid h-[calc(100vh-60px)] w-full">
@@ -30,13 +60,19 @@
                         <Tabs.Trigger value="approved">Approved</Tabs.Trigger>
                     </Tabs.List>
                     <Tabs.Content value="all">
-                        <ChunkList {chunks} />
+                        {#if chunks.length > 0}
+                            <ChunkList {chunks} variant="all" />
+                        {:else}
+                            <div class="flex-1 flex flex-col items-center justify-center">
+                                <p>Select a file to begin</p>
+                            </div>
+                        {/if}
                     </Tabs.Content>
                     <Tabs.Content value="review">
-                        <ChunkList {chunks} />
+                        <ChunkList {chunks} variant="review" />
                     </Tabs.Content>
                     <Tabs.Content value="approved">
-                        <ChunkList {chunks} />
+                        <ChunkList {chunks} variant="approved" />
                     </Tabs.Content>
                 </Tabs.Root>
                 <div class="flex-1" />

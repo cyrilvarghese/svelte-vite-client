@@ -20,6 +20,9 @@
         <Header />
 
         <Router url="">
+            <Route path="/">
+                <ProjectList />
+            </Route>
             <Route path="projects">
                 <ProjectList />
             </Route>

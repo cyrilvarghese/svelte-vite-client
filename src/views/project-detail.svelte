@@ -18,9 +18,9 @@
     let project: Project | null = null;
     let isLoading = false;
     let chunkList: any[];
-    let error: Error | any;
     let value = 13;
-    let selectedFiles = $selectedFileNames;
+    let error: Error | any;
+   
     onMount(() => {
         fetchData();
         const interval = setInterval(() => {
@@ -33,16 +33,15 @@
 
         return () => clearInterval(interval); // Cleanup the interval when the component is destroyed
     });
+
     async function fetchData() {
         isLoading = true;
         try {
             debugger;
             const newProject = await projects.fetchProjectById(+id);
             project = newProject; // Reassigning to trigger reactivity
-            const newchunkList = await projects.fetchChunksByFilenames([
-                "EDI43444.pdf",
-            ]);
-            chunkList = newchunkList; // Reassigning to trigger reactivity
+           
+            const tagsList = await projects.fetchTagsByProject(+id); // Reassigning to trigger reactivity
         } catch (e) {
             error = e;
         } finally {
@@ -123,13 +122,7 @@
                                     {#if project?.jobs}
                                         {#each project?.jobs as job (job.id)}
                                             <Job
-                                                on:getChunksByFilenames={(
-                                                    e,
-                                                ) => {
-                                                    getChunks(
-                                                        e.detail.fileNames,
-                                                    );
-                                                }}
+                                                
                                                 jobName={job.name}
                                                 projectId={project?.id}
                                                 jobId={job.id}
@@ -190,5 +183,5 @@
         {/if}
     </div>
     <!-- <Separator class="ml-6" orientation="vertical" /> -->
-    <ChunkContainer chunks={chunkList} />
+    <ChunkContainer projectId={+id} />
 </main>

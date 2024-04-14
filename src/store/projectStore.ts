@@ -4,9 +4,10 @@ const BASE_URL = "http://localhost:8000/api"
 import { toast } from "svelte-sonner";
 
 export const selectedFileNames = writable<string[]>([]);
+export let tagsList: Writable<Tag[]> = writable([]);
 function createProjectsStore() {
     const { subscribe, set }: Writable<Project[]> = writable([]);
-    
+
 
 
     async function fetchProjects(): Promise<void> {
@@ -84,6 +85,7 @@ function createProjectsStore() {
                 throw new Error(`Error: ${response.statusText}`);
             }
             const tags: Tag[] = await response.json();
+            tagsList.set(tags);
             return tags;
         } catch (error) {
             console.error("Failed to fetch tags:", error);
@@ -147,6 +149,7 @@ function createProjectsStore() {
         fetchTagsByProject,
         fetchChunksByFilenames,
         selectedFileNames
+
     };
 }
 
