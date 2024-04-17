@@ -17,19 +17,21 @@
     import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
     import { Separator } from "$lib/components/ui/separator";
     import { Router, links, Link } from "svelte-routing";
+    import { onMount } from "svelte";
 
     // Props
     export let id: number;
     export let name: string;
     export let description: string;
     export let numberOfJobs: number | undefined; // Assuming this is what you meant by "no of tags"
-    export let updatedOn: string; // Assuming a string representation, e.g., "April 2023"
+   
 
     // Action Methods
     export let onEdit: () => void;
     export let onDelete: () => void;
-    export let onAction3: () => void; // Placeholder for the third action
-    export let onAction4: () => void; // Placeholder for the fourth action
+   
+
+   
 </script>
 
 <Card.Root>
@@ -60,20 +62,19 @@
                                 />
                             </Button>
                         </DropdownMenu.Trigger>
-                        
+
                         <DropdownMenu.Content class="w-[200px]" align="end">
                             <Link to="/projects/{id}" let:active>
                                 <DropdownMenu.Item>
                                     <ListCollapse class="mr-2 h-4 w-4" /> View Project
                                 </DropdownMenu.Item>
                             </Link>
-                            <DropdownMenu.Item on:click={onEdit}> 
+                            <DropdownMenu.Item on:click={onEdit}>
                                 <Edit class="mr-2 h-4 w-4" /> Update
                             </DropdownMenu.Item>
-                            <DropdownMenu.Item on:click={onDelete}> 
+                            <DropdownMenu.Item on:click={onDelete}>
                                 <Trash2 class="mr-2 h-4 w-4" /> Delete
                             </DropdownMenu.Item>
-                         
                         </DropdownMenu.Content>
                     </DropdownMenu.Root>
                 </Router>
@@ -92,5 +93,7 @@
             </div>
             <div>Updated April 2023</div>
         </div>
+ 
+        
     </Card.Content>
 </Card.Root>

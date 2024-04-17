@@ -8,20 +8,27 @@
     import ProjectDetail from "../views/project-detail.svelte";
     import ProjectList from "../views/project-page.svelte";
     import Test from "../views/add-job-form.svelte";
+    import { onMount } from "svelte";
+    import SelectExample from "../views/select-example.svelte";
+    import DashPage from "../views/dash-page.svelte";
 
+    onMount(() => {
+        console.log("page mounted");
+    });
     //sidenav
+ 
 </script>
 
 <div
     class="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]"
 >
-    <Sidebar />
+    <Sidebar  />
     <div class="flex flex-col">
         <Header />
 
         <Router url="">
             <Route path="/">
-                <ProjectList />
+                <DashPage />
             </Route>
             <Route path="projects">
                 <ProjectList />
@@ -32,7 +39,7 @@
             <Route path="files" component={FileList} />
             <Route path="settings" component={SettingsPage} />
             <Route path="query" component={Query} />
-            <Route path="test" component={Test} />
+            <Route path="test" component={SelectExample} />
         </Router>
     </div>
 </div>

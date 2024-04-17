@@ -13,6 +13,11 @@ export interface File {
     created_at: string;
 }
 
+export interface Role {
+    id: number;
+    name: string;
+    description: string;
+}
 export interface JobDetail {
     id: number;
     name: string;

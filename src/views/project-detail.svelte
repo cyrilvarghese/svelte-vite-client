@@ -13,15 +13,21 @@
     import FilesList from "./file-list.svelte";
     import ChunkContainer from "./chunks-container.svelte";
     import AddJob from "./add-job-dialog.svelte";
+    import { activeRoute } from "../store/projectStore";
+    import { roles } from "../store/rolesStore";
 
+    import { fade } from "svelte/transition";
     export let id = "";
     let project: Project | null = null;
     let isLoading = false;
     let chunkList: any[];
     let value = 13;
     let error: Error | any;
-   
+
     onMount(() => {
+        let location = window.location;
+        activeRoute.set(location.href);
+
         fetchData();
         const interval = setInterval(() => {
             if (value >= 100) {
@@ -37,11 +43,11 @@
     async function fetchData() {
         isLoading = true;
         try {
-            debugger;
             const newProject = await projects.fetchProjectById(+id);
             project = newProject; // Reassigning to trigger reactivity
-           
+
             const tagsList = await projects.fetchTagsByProject(+id); // Reassigning to trigger reactivity
+            const rolesList = await roles.fetchRoles(); // Reassigning to trigger reactivity
         } catch (e) {
             error = e;
         } finally {
@@ -105,33 +111,43 @@
                                 </div>
                             </Card.Title>
                             <Card.Description>
-                                List of tagging jobs for the project
+                                <div class="flex flex-row justify-between">
+                                    List of tagging jobs for the project
+                                    <AddJob
+                                        on:openChange={(e) => {
+                                            e.detail.openModal
+                                                ? ""
+                                                : handleRefresh();
+                                        }}
+                                    />
+                                </div>
                             </Card.Description>
-
-                            <AddJob
-                                on:openChange={(e) => {
-                                    e.detail.openModal ? "" : handleRefresh();
-                                }}
-                            />
                         </Card.Header>
                         <Card.Content class="space-y-2 pb-4">
                             <div
                                 class="flex flex-1 items-start justify-start rounded-lg shadow-sm"
                             >
-                                <div class=" flex flex-col">
-                                    {#if project?.jobs}
-                                        {#each project?.jobs as job (job.id)}
-                                            <Job
-                                                
-                                                jobName={job.name}
-                                                projectId={project?.id}
-                                                jobId={job.id}
-                                                createdAt={job.created_at}
-                                            />
+                                <div
+                                    class=" flex flex-col"
+                                    transition:fade={{
+                                        delay: 250,
+                                        duration: 300,
+                                    }}
+                                >
+                                    <ScrollArea class=" h-[calc(100vh-450px)]">
+                                        {#if project?.jobs}
+                                            {#each project?.jobs as job (job.id)}
+                                                <Job
+                                                    jobName={job.name}
+                                                    projectId={project?.id}
+                                                    jobId={job.id}
+                                                    createdAt={job.created_at}
+                                                />
 
-                                            <!-- More job details here -->
-                                        {/each}
-                                    {/if}
+                                                <!-- More job details here -->
+                                            {/each}
+                                        {/if}
+                                    </ScrollArea>
                                 </div>
                             </div>
                         </Card.Content>
@@ -159,17 +175,19 @@
                                 <Card.Description>
                                     List of files for the project
                                 </Card.Description>
-                                <Button class="w-[150px]">
-                                    <FileUp class="mr-2" />
-                                    Upload</Button
-                                >
                             </Card.Header>
                             <Card.Content class="space-y-2 pb-2  ">
-                                <ScrollArea class="h-full">
+                                <ScrollArea class=" h-[calc(100vh-420px)]">
                                     <div
                                         class="flex items-start justify-start rounded-lg shadow-sm"
                                     >
-                                        <div class=" flex flex-col items-start">
+                                        <div
+                                            class=" flex flex-col items-start"
+                                            transition:fade={{
+                                                delay: 250,
+                                                duration: 300,
+                                            }}
+                                        >
                                             <FilesList {files} />
                                         </div>
                                     </div>

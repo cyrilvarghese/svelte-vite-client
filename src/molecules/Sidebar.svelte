@@ -1,16 +1,23 @@
-<script>
+<script lang="ts">
     import Button from "$lib/components/ui/button/button.svelte";
     import { Router, links, Link } from "svelte-routing";
+    import { onMount } from "svelte";
+    import { activeRoute } from "../store/projectStore";
 
     import {
         Bell,
         BotMessageSquare,
         Files,
         FolderKanban,
+        Home,
         MousePointerClick,
         Settings,
     } from "lucide-svelte";
-    
+    let location: string;
+    activeRoute.subscribe((href) => {
+        debugger;
+        location = href;
+    });
 </script>
 
 <div class="hidden border-r bg-muted/40 md:block">
@@ -31,11 +38,25 @@
                 class="grid items-start px-2 text-sm font-medium lg:px-4"
             >
                 <Router>
+                    <Link to="/" let:active>
+                        <span
+                            class="flex items-center
+                                gap-3 rounded-lg px-3 py-2
+                                transition-all hover:text-primary {active
+                                ? 'text-primary bg-muted'
+                                : 'text-muted-foreground'}"
+                        >
+                            <Home class="h-4 w-4" />
+                            Home
+                        </span>
+                    </Link>
                     <Link to="/projects/" let:active>
                         <span
                             class="flex items-center
                                 gap-3 rounded-lg px-3 py-2
-                                text-muted-foreground transition-all hover:text-primary {active
+                                text-muted-foreground transition-all hover:text-primary {location.indexOf(
+                                '/projects',
+                            ) !== -1
                                 ? 'text-primary bg-muted'
                                 : 'text-muted-foreground '}"
                         >

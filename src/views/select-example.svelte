@@ -61,14 +61,14 @@
         <legend class="-ml-1 px-1 text-sm font-medium"> Messages </legend>
         <div class="grid gap-3">
             <Label for="role">Role</Label>
-            <Select.Root selected={{ value: "system", label: "system" }}>
+            <Select.Root multiple selected={tags}>
                 <Select.Trigger>
                     <Select.Value placeholder="Select a role" />
                 </Select.Trigger>
                 <Select.Content>
-                    <Select.Item value="system">System</Select.Item>
-                    <Select.Item value="user">User</Select.Item>
-                    <Select.Item value="assistant">Assistant</Select.Item>
+                    <Select.Item value="t1">System</Select.Item>
+                    <Select.Item value="t2">User</Select.Item>
+                    <Select.Item value="t3">Assistant</Select.Item>
                 </Select.Content>
             </Select.Root>
         </div>

@@ -18,7 +18,7 @@
     let error: Error | any;
 
     selectedFileNames.subscribe((filenames) => {
-        debugger;
+        
         if (filenames.length > 0) {
             getChunks(filenames);
         } else {
@@ -29,7 +29,7 @@
         isLoading = true;
         try {
             chunks = await projects.fetchChunksByFilenames(fileNames);
-            debugger;
+            
             console.log("chunk data refreshed");
         } catch (e) {
             error = e;

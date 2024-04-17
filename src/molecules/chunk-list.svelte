@@ -4,6 +4,8 @@
 	import type { Tag } from "src/types/index.js";
 	import BadgeList from "./badge-list.svelte";
 	import { onMount } from "svelte";
+	import ChunkDetails from "../views/chunk-details-dialog.svelte";
+
 	export let chunks: any[] = [];
 	/**
 	 * Determines the variant of the component, which affects its styling and potentially its behavior.
@@ -26,7 +28,6 @@
 		return "secondary";
 	}
 	function getDataPerVariant(data: any[]) {
-		debugger
 		if (variant === "approved") {
 			return data.filter((chunk) => {
 				return !chunk.review; //return item that dont need review
@@ -46,21 +47,27 @@
 			{#if chunks}
 				{#each chunks as chunk}
 					{#each getDataPerVariant(chunk.data) as docObj}
-						<button
-							class={cn(
-								"flex flex-col bg-white items-start gap-2 rounded-lg shadow-sm  p-4 text-left text-sm transition-all hover:bg-accent hover:shadow",
-							)}
+						<ChunkDetails
+							documentText={docObj.document}
+							tags={docObj.tags}
 						>
-							<div
-								class="line-clamp-2 text-sm m-4 ml-0 text-muted-foreground"
+							<button
+								class={cn(
+									"flex flex-col bg-white items-start gap-2 rounded-lg shadow-sm  p-4 text-left text-sm transition-all hover:bg-accent hover:shadow",
+								)}
 							>
-								{docObj.document}
-							</div>
+								<div
+									class="line-clamp-2 text-sm m-4 ml-0 text-muted-foreground"
+								>
+									<span class="p-4">{docObj.id}</span>
+									{docObj.document}
+								</div>
 
-							<div class="flex items-center gap-2">
-								<BadgeList tags={docObj.tags} />
-							</div>
-						</button>
+								<div class="flex items-center gap-2">
+									<BadgeList tags={docObj.tags} />
+								</div>
+							</button>
+						</ChunkDetails>
 					{/each}
 				{/each}
 			{/if}

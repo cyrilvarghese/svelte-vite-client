@@ -1,9 +1,10 @@
 import type { Project, File, JobDetail, Tag } from 'src/types';
 import { writable, type Writable } from 'svelte/store';
 const BASE_URL = "http://localhost:8000/api"
-import { toast } from "svelte-sonner";
+ 
 
 export const selectedFileNames = writable<string[]>([]);
+export const activeRoute = writable("/");
 export let tagsList: Writable<Tag[]> = writable([]);
 function createProjectsStore() {
     const { subscribe, set }: Writable<Project[]> = writable([]);
@@ -25,12 +26,16 @@ function createProjectsStore() {
             }));
 
             set(projects);
+            
         } catch (error) {
             console.error("Failed to fetch projects:", error);
-            set([]);
-            throw error;
+
+            set([]); // Reset projects or handle error state appropriately
+            // Throw error if needed, or handle it in a different way based on your application's requirements
+            // throw error;
         }
     }
+
 
     // New method to fetch details of a specific job within a project
     async function fetchJobDetails(projectId: number, jobId: number): Promise<JobDetail> {
@@ -139,6 +144,7 @@ function createProjectsStore() {
     }
 
 
+
     return {
         subscribe,
         fetchProjects,
@@ -148,7 +154,8 @@ function createProjectsStore() {
         createJobWithFiles,
         fetchTagsByProject,
         fetchChunksByFilenames,
-        selectedFileNames
+        selectedFileNames,
+
 
     };
 }

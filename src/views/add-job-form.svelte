@@ -6,7 +6,7 @@
     import Button from "$lib/components/ui/button/button.svelte";
     import { Check } from "lucide-svelte";
     import Textarea from "$lib/components/ui/textarea/textarea.svelte";
-    import { toast } from "svelte-sonner";
+ 
     import { createEventDispatcher } from "svelte";
     import { tagsList } from "../store/projectStore";
     import type { Tag } from "src/types";

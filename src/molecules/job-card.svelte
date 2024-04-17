@@ -33,14 +33,14 @@
     }
 </script>
 
-<Collapsible.Root class="w-[400px] space-y-2 pb-2" onOpenChange={getJobDetails}>
+<Collapsible.Root class="  space-y-2 pb-2" onOpenChange={getJobDetails}>
     <div class="flex items-center justify-between space-x-4 mb-2">
         <div
             class="rounded-md flex flex-row border border-b-2 px-4 py-3 font-mono text-sm {isChecked
                 ? 'bg-muted'
                 : ''}"
         >
-            <h4 class="text-sm font-semibold w-[250px]">{jobName}</h4>
+            <h4 class="text-sm font-semibold w-[280px]">{jobName}</h4>
             <Collapsible.Trigger asChild let:builder>
                 <Button builders={[builder]} variant="ghost" class="w-9 p-0">
                     <ChevronsUpDown class="h-4 w-4" />

@@ -3,10 +3,18 @@
     import ProjectCard from "../molecules/project-card.svelte";
     import { onMount } from "svelte";
     import { projects } from "../store/projectStore";
+    import { activeRoute } from "../store/projectStore";
+    import toast, { Toaster } from "svelte-french-toast";
     import { Link } from "svelte-routing";
+    import EmptyState from "../molecules/empty-state.svelte";
+ 
+ 
     let error: string = "";
-
+ 
+ 
     onMount(() => {
+        let location = window.location;
+        activeRoute.set(location.href);
         projects.fetchProjects().catch((err: Error) => {
             error = err.message;
         });
@@ -19,15 +27,12 @@
     </div>
     <div class="flex flex-1 items-start justify-start rounded-lg shadow-sm">
         {#if $projects.length === 0 || error}
-            <div class="flex flex-col items-center gap-1 text-center">
-                <h3 class="text-2xl font-bold tracking-tight">
-                    You have no Projects
-                </h3>
-                <p class="text-sm text-muted-foreground">
-                    Start by creating you first project
-                </p>
-                <Button class="mt-4">Add Project</Button>
-            </div>
+            <EmptyState
+                title="You have no projects"
+                description=" Start by creating you first project"
+                addButtonText="Add Project"
+                showAddAction
+            />
         {:else}
             <div>
                 <div class="grid grid-cols-3 gap-4">
