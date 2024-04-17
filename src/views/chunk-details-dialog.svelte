@@ -57,7 +57,7 @@
         <p class="text-md">{documentText}</p>
         <input class="h-0 m-0 p-0" style="position: absolute;" type="text" />
         <BadgeList {tags} />
-        <AddTagForm />
+       
         <Select.Root
             multiple
             selected={convertTagsToSelected(tags)}

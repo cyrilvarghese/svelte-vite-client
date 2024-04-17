@@ -7,7 +7,6 @@
     import Job from "../molecules/job-card.svelte";
     import * as Tabs from "$lib/components/ui/tabs/index.js";
     import * as Card from "$lib/components/ui/card/index.js";
-    import { Button } from "$lib/components/ui/button/index.js";
     import { FileUp, Search } from "lucide-svelte";
     import { ScrollArea } from "$lib/components/ui/scroll-area";
     import FilesList from "./file-list.svelte";
@@ -15,7 +14,7 @@
     import AddJob from "./add-job-dialog.svelte";
     import { activeRoute } from "../store/projectStore";
     import { roles } from "../store/rolesStore";
-
+    import { Button } from "$lib/components/ui/button";
     import { fade } from "svelte/transition";
     export let id = "";
     let project: Project | null = null;
@@ -25,6 +24,7 @@
     let error: Error | any;
 
     onMount(() => {
+       
         let location = window.location;
         activeRoute.set(location.href);
 
@@ -83,6 +83,7 @@
 </script>
 
 <main class="flex flex-row">
+     
     <div class="flex flex-1 flex-col gap-4 p-4 lg:p-6">
         {#if isLoading}
             <div class="flex flex-col items-start pl-0 p-12 h-full">

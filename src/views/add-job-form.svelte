@@ -6,10 +6,12 @@
     import Button from "$lib/components/ui/button/button.svelte";
     import { Check } from "lucide-svelte";
     import Textarea from "$lib/components/ui/textarea/textarea.svelte";
- 
+
+    import LoaderCircle from "lucide-svelte/icons/loader-circle";
     import { createEventDispatcher } from "svelte";
     import { tagsList } from "../store/projectStore";
     import type { Tag } from "src/types";
+    import { Toaster, toast } from "svelte-sonner";
 
     let projectId = 1;
     let name: string = "";
@@ -17,18 +19,18 @@
     let files: FileList | null = null;
     let errorMessage: string = "";
     let docTags: Tag[];
-
+    let loading = false;
     const dispatch = createEventDispatcher();
     tagsList.subscribe((tags) => {
         docTags = tags;
     });
-
     async function handleSubmit() {
         if (!files || files.length === 0) {
             errorMessage = "Please select at least one file to upload.";
             return;
         }
         try {
+            loading = true;
             await projects.createJobWithFiles(
                 projectId,
                 name,
@@ -40,7 +42,8 @@
             name = "";
             description = "";
             files = null;
-            toast.success("Job and files created successfully");
+            loading = false;
+            toast.success("Job Added Successfully!");
             dispatch("closeModal");
         } catch (error: any) {
             errorMessage = `Failed to create job and files: ${error.message}`;
@@ -52,7 +55,7 @@
     on:submit|preventDefault={handleSubmit}
     class="grid w=[340px] items-start gap-6"
 >
-    <fieldset class="grid gap-6 rounded-lg border p-4">
+    <fieldset class="grid gap-6 rounded-lg border p-4" disabled={loading}>
         <legend class="-ml-1 px-1 text-sm font-medium"> Job Details </legend>
         <div class="grid gap-3">
             <Label for="name">Name</Label>
@@ -88,20 +91,19 @@
         </div>
         <div class="grid gap-3">
             <Label for="files">Tags in the project</Label>
-             <BadgeList tags={docTags} />
-            <!-- {#await projects.fetchTagsByProject(+projectId)} -->
-            <!-- <p class="mb-4 animate-pulse">Loading Tags</p> -->
-            <!-- {:then tags} -->
-            <!-- <BadgeList {tags} /> -->
-            <!-- projects.fetchTagsByProject was fulfilled -->
-            <!-- {:catch error} -->
-            <!-- <p class="mb-4 animate-pulse">Error fetching API : {error}</p> -->
-            <!-- projects.fetchTagsByProject was rejected -->
-            <!-- {/await} -->
+            <BadgeList tags={docTags} />
         </div>
     </fieldset>
-    <Button type="submit" class="w-[150px]">
-        <Check class="h-4 w-4 mr-2" />
-        Create Job
-    </Button>
+
+    {#if loading}
+        <Button class="w-[150px]" disabled>
+            <LoaderCircle class="mr-2 h-4 w-4 animate-spin " />
+            Please wait
+        </Button>
+    {:else}
+        <Button type="submit" class="w-[150px]">
+            <Check class="h-4 w-4 mr-2" />
+            Create Job
+        </Button>
+    {/if}
 </form>
