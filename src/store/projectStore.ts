@@ -1,4 +1,5 @@
 import type { Project, File, JobDetail, Tag } from 'src/types';
+import { toast } from 'svelte-sonner';
 import { writable, type Writable } from 'svelte/store';
 const BASE_URL = "http://localhost:8000/api"
 
@@ -27,6 +28,7 @@ function createProjectsStore() {
 
             set(projects);
         } catch (error) {
+            toast.error("Unable to get projects");
             console.error("Failed to fetch projects:", error);
             set([]);
             throw error;
@@ -74,6 +76,7 @@ function createProjectsStore() {
             // You might want to do something with the files, like setting them to a store or returning them.
             return files; // This is just a placeholder action.
         } catch (error) {
+            toast.error("Unable to get files");
             console.error("Failed to fetch project files:", error);
             throw error;
         }

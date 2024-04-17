@@ -43,8 +43,8 @@
             description = "";
             files = null;
             loading = false;
-            toast.success("Job Added Successfully!");
             dispatch("closeModal");
+            toast.success("Job Added Successfully!");
         } catch (error: any) {
             errorMessage = `Failed to create job and files: ${error.message}`;
         }

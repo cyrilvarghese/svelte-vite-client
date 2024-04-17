@@ -1,12 +1,4 @@
 <script lang="ts">
-    import Paperclip from "lucide-svelte/icons/paperclip";
-    import Mic from "lucide-svelte/icons/mic";
-    import CornerDownLeft from "lucide-svelte/icons/corner-down-left";
-    import { Badge } from "$lib/components/ui/badge/index.js";
-    import { Button } from "$lib/components/ui/button/index.js";
-    import * as Tooltip from "$lib/components/ui/tooltip/index.js";
-    import { Textarea } from "$lib/components/ui/textarea/index.js";
-    import { Label } from "$lib/components/ui/label/index.js";
     import ChunkList from "../molecules/chunk-list.svelte";
     import * as Tabs from "$lib/components/ui/tabs/index.js";
     import { onMount } from "svelte";
