@@ -1,17 +1,12 @@
 <script lang="ts">
-    import { Button, buttonVariants } from "$lib/components/ui/button/index.js";
+    import { Button } from "$lib/components/ui/button/index.js";
     import * as Dialog from "$lib/components/ui/dialog/index.js";
-    import { Plus } from "lucide-svelte";
-    import AddJobForm from "./add-job-form.svelte";
-    import { createEventDispatcher } from "svelte";
-    import { onMount } from "svelte";
     import BadgeList from "../molecules/badge-list.svelte";
     import * as Select from "$lib/components/ui/select/index.js";
     import { tagsList } from "../store/projectStore";
 
     import type { Tag } from "src/types";
     import type { Selected } from "bits-ui";
-    import AddTagForm from "./add-tag-form.svelte";
     export let documentText = "";
     export let tags: Tag[];
     let allTags: Tag[];
@@ -40,7 +35,6 @@
         selectedValues: Selected<string>[],
     ) {
         tags = findMatchingTags(selectedValues);
-        debugger;
     };
 </script>
 
@@ -57,7 +51,7 @@
         <p class="text-md">{documentText}</p>
         <input class="h-0 m-0 p-0" style="position: absolute;" type="text" />
         <BadgeList {tags} />
-       
+
         <Select.Root
             multiple
             selected={convertTagsToSelected(tags)}

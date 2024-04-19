@@ -58,7 +58,7 @@
         isLoading = true;
         try {
             chunkList = await projects.fetchChunksByFilenames(fileNames);
-            debugger;
+ 
             console.log("chunk data refreshed");
         } catch (e) {
             error = e;

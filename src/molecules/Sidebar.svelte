@@ -15,7 +15,7 @@
     } from "lucide-svelte";
     let location: string;
     activeRoute.subscribe((href) => {
-        debugger;
+     
         location = href;
     });
 </script>

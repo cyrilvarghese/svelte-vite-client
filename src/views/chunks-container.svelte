@@ -13,7 +13,7 @@
     let error: Error | any;
 
     selectedFileNames.subscribe((filenames) => {
-        debugger;
+ 
         selectedFiles = filenames;
         if (filenames.length > 0) {
             getChunks(filenames);

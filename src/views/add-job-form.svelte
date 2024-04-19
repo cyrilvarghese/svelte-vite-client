@@ -67,14 +67,14 @@
                 required
             />
         </div>
-        <div class="grid gap-3">
+        <!-- <div class="grid gap-3">
             <Label for="description">Description</Label>
             <Textarea
                 id="description"
                 placeholder="Enter Description"
                 bind:value={description}
             />
-        </div>
+        </div> -->
     </fieldset>
     <fieldset class="grid gap-6 rounded-lg border p-4" disabled={loading}>
         <legend class="-ml-1 px-1 text-sm font-medium"> Tagging Details</legend>
