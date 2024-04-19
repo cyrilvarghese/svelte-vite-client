@@ -76,7 +76,7 @@
             />
         </div>
     </fieldset>
-    <fieldset class="grid gap-6 rounded-lg border p-4">
+    <fieldset class="grid gap-6 rounded-lg border p-4" disabled={loading}>
         <legend class="-ml-1 px-1 text-sm font-medium"> Tagging Details</legend>
         <div class="grid gap-3">
             <Label for="files">Files to be tagged</Label>

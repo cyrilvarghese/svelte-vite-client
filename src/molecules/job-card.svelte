@@ -40,7 +40,11 @@
                 ? 'bg-muted'
                 : ''}"
         >
-            <h4 class="text-sm font-semibold w-[280px]">{jobName}</h4>
+            <h4
+                class="text-sm font-semibold w-[280px] flex flex-col justify-center"
+            >
+                {jobName}
+            </h4>
             <Collapsible.Trigger asChild let:builder>
                 <Button builders={[builder]} variant="ghost" class="w-9 p-0">
                     <ChevronsUpDown class="h-4 w-4" />
@@ -53,7 +57,7 @@
     <Collapsible.Content class="space-y-2 pb-3">
         {#if jobDetail}
             {#each jobDetail.files as file}
-                <FileItem    variant="simple" {file} />
+                <FileItem variant="simple" {file} />
             {/each}
         {:else if loading}
             <p class="pl-4 animate-pulse">Loading details...</p>

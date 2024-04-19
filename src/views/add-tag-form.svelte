@@ -32,36 +32,41 @@
             type="text"
             class="w-full"
             bind:value={name}
-            placeholder="Enter a Short Tag"
+            placeholder="Enter A Short Tag"
         />
     </div>
-    <div class="grid gap-3">
-        <Label for="description" class="relative"
-            >Description
-            <Button
-                class="ml-2 p-0 absolute  text-blue-600 "
-                style="top:-13px;left:80px"
-                variant="link"
-                ><RefreshCcw class="h-4 w-4 mr-2" /> Generate Description</Button
-            >
-        </Label>
-        <Textarea
-            id="description"
-            bind:value={description}
-            class="min-h-32"
-            placeholder="Enter Detailed tag description. A longer description will lead to more accurate auto taging"
-        />
-        <Select.Root multiple>
-            <Select.Trigger>
-                <Select.Value placeholder="Select a role" />
-            </Select.Trigger>
-            <Select.Content>
-                {#each allroles as role}
-                    <Select.Item value={role.id}>{role.name}</Select.Item>
-                {/each}
-            </Select.Content>
-        </Select.Root>
-        <div class="items-top flex space-x-2 my-4">
+    <div class="grid gap-6">
+        <div class="grid gap-3">
+            <Label for="description" class="relative"
+                >Description
+                <Button
+                    class="ml-2 p-0 absolute  text-blue-600 "
+                    style="top:-13px;left:80px"
+                    variant="link"
+                    ><RefreshCcw class="h-4 w-4 mr-2" /> Generate Description</Button
+                >
+            </Label>
+            <Textarea
+                id="description"
+                bind:value={description}
+                class="min-h-32"
+                placeholder="Enter Detailed tag description. A longer description will lead to more accurate auto taging"
+            />
+        </div>
+        <div class="grid gap-3">
+            <Label for="description" class="relative">Roles</Label>
+            <Select.Root multiple>
+                <Select.Trigger>
+                    <Select.Value placeholder="Select a role" />
+                </Select.Trigger>
+                <Select.Content>
+                    {#each allroles as role}
+                        <Select.Item value={role.id}>{role.name}</Select.Item>
+                    {/each}
+                </Select.Content>
+            </Select.Root>
+        </div>
+        <div class="items-top flex space-x-2">
             <Checkbox
                 id="regenTags"
                 onCheckedChange={handleCheckChanged}
@@ -80,7 +85,7 @@
                         : 'hidden'} text-sm text-red-600"
                 >
                     Checking this will re-evaluate all the tags (including the
-                    new one) for all the chunks and apply them automatically.
+                    new one) for all the chunks and apply them automatically. This might take some time.
                 </p>
             </div>
         </div>
