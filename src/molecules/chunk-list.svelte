@@ -50,6 +50,8 @@
 						<ChunkDetails
 							documentText={docObj.document}
 							tags={docObj.tags}
+							docMetadata={docObj.metadata}
+							documentId={docObj.id}
 						>
 							<button
 								class={cn(
@@ -59,7 +61,7 @@
 								<div
 									class="line-clamp-2 text-sm m-4 ml-0 text-muted-foreground"
 								>
-									<span class="p-4">{docObj.id}</span>
+									<!-- <span class="p-4">{docObj.id}</span> -->
 									{docObj.document}
 								</div>
 

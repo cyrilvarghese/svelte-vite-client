@@ -78,7 +78,7 @@
         role="button"
         tabindex="0"
         on:click={fileItemClicked}
-        class="rounded-md flex flex-rowtruncate hover:bg-muted hover:underline cursor-pointer flex-start items-center border align-baseline px-4 py-3 font-mono text-sm w-[320px] mb-2 {checked
+        class="rounded-md flex flex-rowtruncate hover:bg-muted hover:underline cursor-pointer flex-start items-center border align-baseline px-4 py-3 text-sm w-[320px] mb-2 {checked
             ? 'bg-muted '
             : ''}"
     >

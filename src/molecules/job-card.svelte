@@ -36,7 +36,7 @@
 <Collapsible.Root class="  space-y-2 pb-2" onOpenChange={getJobDetails}>
     <div class="flex items-center justify-between space-x-4 mb-2">
         <div
-            class="rounded-md flex flex-row border border-b-2 px-4 py-3 font-mono text-sm {isChecked
+            class="rounded-md flex flex-row border border-b-2 px-4 py-3 text-sm {isChecked
                 ? 'bg-muted'
                 : ''}"
         >

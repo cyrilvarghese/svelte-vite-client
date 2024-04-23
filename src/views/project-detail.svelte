@@ -1,6 +1,7 @@
 <script lang="ts">
     import SecondaryHeader from "../molecules/secondary-header.svelte";
     import { projects, selectedFileNames } from "../store/projectStore";
+    import { tags } from "../store/tagStore";
     import type { Project } from "../types";
     import { Progress } from "$lib/components/ui/progress";
     import { onMount } from "svelte";
@@ -46,7 +47,7 @@
             const newProject = await projects.fetchProjectById(+id);
             project = newProject; // Reassigning to trigger reactivity
 
-            const tagsList = await projects.fetchTagsByProject(+id); // Reassigning to trigger reactivity
+            const tagsList = await tags.fetchTagsByProject(+id); // Reassigning to trigger reactivity
             const rolesList = await roles.fetchRoles(); // Reassigning to trigger reactivity
         } catch (e) {
             error = e;

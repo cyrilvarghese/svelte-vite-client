@@ -5,6 +5,9 @@
     import AddTagForm from "./add-tag-form.svelte";
     import { createEventDispatcher } from "svelte";
     import { onMount } from "svelte";
+
+    export let projectId: number = 0;
+
     const dispatch = createEventDispatcher();
     let openModal: boolean = false;
     function handleOpenChange(isOpen: boolean) {
@@ -31,6 +34,6 @@
             <Dialog.Description>Create a new tag</Dialog.Description>
         </Dialog.Header>
 
-        <AddTagForm on:closeModal={closeModal} />
+        <AddTagForm projectId={projectId} on:closeModal={closeModal} />
     </Dialog.Content>
 </Dialog.Root>

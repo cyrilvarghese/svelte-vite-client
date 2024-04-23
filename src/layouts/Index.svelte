@@ -9,7 +9,6 @@
     import ProjectList from "../views/project-page.svelte";
     import Test from "../views/test.svelte";
     import { onMount } from "svelte";
-    import SelectExample from "../views/select-example.svelte";
     import DashPage from "../views/dash-page.svelte";
     import { Toaster } from "svelte-sonner";
 

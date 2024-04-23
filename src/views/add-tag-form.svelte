@@ -11,7 +11,7 @@
     import * as Select from "$lib/components/ui/select/index.js";
     import { roles } from "../store/rolesStore";
     import { tags } from "../store/tagStore";
-    import LoaderButton from "../molecules/button-with-loader.svelte";
+    import LoaderButton from "../molecules/submt-btn-ldr.svelte";
 
     import { answerStore } from "../store/LLMQueryStore";
     import type { LLMRequestData } from "../store/LLMQueryStore";
@@ -21,6 +21,7 @@
     import { createEventDispatcher } from "svelte";
     import { toast } from "svelte-sonner";
 
+    export let projectId: number = 0;
     let loading = false;
     const dispatch = createEventDispatcher();
     let name: string = "";
@@ -48,13 +49,16 @@
         let roles = selectedRoles.map((role) => {
             return +role.value;
         });
-        await tags.createTag(name, description, "#000", roles);
+        await tags.createTag(name, description, "#000", roles, projectId);
         loading = false;
+
+        name = "";
+        description = "";
+        selectedRoles = [];
         dispatch("closeModal");
-        toast.success("Tag Added Successfully!");
-        name="";
-        description="";
-        selectedRoles=[]; 
+        await tags.fetchTagsByProject(projectId).then(() => {
+            toast.success("Tag Added Successfully!");
+        });
     }
     answerStore.subscribe((desc) => {
         description = desc;
@@ -75,7 +79,6 @@
 
         await answerStore.fetchAnswer(LLMRequest);
         loading = false;
-       
     }
 </script>
 

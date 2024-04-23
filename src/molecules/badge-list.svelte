@@ -5,8 +5,8 @@
     import * as Tooltip from "$lib/components/ui/tooltip";
     let errorClass = "";
     // Function to return style string based on tag color
-    function badgeStyle(color: string, score: string) {
-        if (+score < -10.0) {
+    function badgeStyle(color: string, score: string|undefined) {
+        if (score && +score < -10.0) {
             errorClass = "bg-red-700 text-slate-100";
             return;
         }
@@ -34,7 +34,7 @@
                     class="mr-2 mt-2 {errorClass}"
                     style={badgeStyle(tag.color, tag.score)}
                 >
-                    {#if +tag.score < -10.0}
+                    {#if tag.score && +tag.score < -10.0}
                         <AlertCircle class="h-4 w-4 mr-2" />
                     {/if}
                     {tag.name}</Badge

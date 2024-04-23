@@ -9,7 +9,7 @@
 
     import LoaderCircle from "lucide-svelte/icons/loader-circle";
     import { createEventDispatcher } from "svelte";
-    import { tagsList } from "../store/projectStore";
+    import { tagsList } from "../store/tagStore";
     import type { Tag } from "src/types";
     import { Toaster, toast } from "svelte-sonner";
 

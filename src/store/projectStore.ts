@@ -6,7 +6,6 @@ const BASE_URL = "http://localhost:8000/api"
 
 export const selectedFileNames = writable<string[]>([]);
 export const activeRoute = writable("/");
-export let tagsList: Writable<Tag[]> = writable([]);
 function createProjectsStore() {
     const { subscribe, set }: Writable<Project[]> = writable([]);
 
@@ -82,20 +81,7 @@ function createProjectsStore() {
         }
     }
 
-    async function fetchTagsByProject(projectId: number): Promise<Tag[]> {
-        try {
-            const response = await fetch(`${BASE_URL}/projects/${projectId}/tags`);
-            if (!response.ok) {
-                throw new Error(`Error: ${response.statusText}`);
-            }
-            const tags: Tag[] = await response.json();
-            tagsList.set(tags);
-            return tags;
-        } catch (error) {
-            console.error("Failed to fetch tags:", error);
-            throw error;
-        }
-    }
+
     async function createJobWithFiles(projectId: number, name: string, description: string, files: FileList): Promise<void> {
         const formData = new FormData();
         formData.append('project_id', projectId.toString());
@@ -150,7 +136,7 @@ function createProjectsStore() {
         fetchProjectById,
         fetchProjectFiles,
         createJobWithFiles,
-        fetchTagsByProject,
+
         fetchChunksByFilenames,
         selectedFileNames,
 

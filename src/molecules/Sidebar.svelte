@@ -15,7 +15,6 @@
     } from "lucide-svelte";
     let location: string;
     activeRoute.subscribe((href) => {
-     
         location = href;
     });
 </script>

@@ -58,7 +58,7 @@
                             >
                                 Relevant Chunks
                             </h2>
-                            <AddTagDialog />
+                            <AddTagDialog projectId={projectId} />
                         </div>
                     {/if}
 

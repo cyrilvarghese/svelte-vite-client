@@ -1,0 +1,47 @@
+import { writable, type Writable } from 'svelte/store';
+const BASE_URL = "http://localhost:8000/api"
+import { toast } from 'svelte-sonner';
+
+export interface MetadataUpdateRequest {
+    metadatas: string[],
+    doc_ids: string[]
+}
+
+function createMetadataStore() {
+    const { subscribe, set }: Writable<[]> = writable([]);
+
+    async function updateMetadataTags(requestBody: MetadataUpdateRequest): Promise<void> {
+        try {
+            const response = await fetch(`${BASE_URL}/chunks/update_metadata`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    metadatas: Array.isArray(requestBody.metadatas) ? requestBody.metadatas : [requestBody.metadatas],
+                    doc_ids: Array.isArray(requestBody.doc_ids) ? requestBody.doc_ids : [requestBody.doc_ids],
+                }),
+            });
+
+            if (!response.ok) {
+                toast.error("Failed to update metadata:" + response.statusText)
+
+            }
+
+            const result = await response.json();
+            toast.success("Chunk Tagged Successfully!");
+            // Assuming you might want to manage state, adjust as necessary
+        } catch (error) {
+            console.error("Failed to update metadata:", error);
+            set([]); // Clear or handle errors as needed
+            throw error;
+        }
+    }
+
+    return {
+        subscribe,
+        updateMetadataTags,
+    };
+}
+
+export const metadataStore = createMetadataStore();

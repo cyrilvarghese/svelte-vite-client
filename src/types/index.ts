@@ -1,5 +1,5 @@
 export interface Tag {
-    score: string;
+    score?: string;
     id?: number;
     name: string;
     description: string;
