@@ -12,7 +12,7 @@
     import { createEventDispatcher } from "svelte";
     export let documentText = "";
     export let documentId = "";
-    export let docMetadata: any;
+    export let document: any;
     export let tags: Tag[];
 
     const dispatch = createEventDispatcher();
@@ -24,8 +24,8 @@
     // Function to convert tag array to label-value pairs
 
     function convertTagsToSelected(tags: Tag[]): Selected<string>[] {
-        debugger;
-        let convertedArr = tags.map((tag) => ({
+        
+        let convertedArr: any = tags.map((tag) => ({
             value: tag.id, // Using the tag's name as the value
             label: tag.name, // Using the tag's description as the label
         }));
@@ -34,7 +34,7 @@
     // Function to find matching tags
     function findMatchingTags(selectedValues: Selected<string>[]): Tag[] {
         return selectedValues.map((tagName) => {
-            const foundTag = allTags.find((tag) => tag.name === tagName.value);
+            const foundTag = allTags.find((tag) => tag.id === +tagName.value);
             if (!foundTag) {
                 throw new Error(`No tag found for the name: ${tagName.value}`);
             }
@@ -49,17 +49,20 @@
 
     async function updateTagMetadata() {
         let req: MetadataUpdateRequest = {
-            metadatas: [],
+            docs: [],
             doc_ids: [],
         };
-        debugger;
+
         let tagsForMetadata = tags.map((tag) => {
             return { tag_name: tag.name, score: tag.score ? tag.score : 100 };
         });
-        docMetadata.tags = JSON.stringify(tagsForMetadata);
+        document.metadata.tags = JSON.stringify(tagsForMetadata);
         req.doc_ids.push(documentId);
-        req.metadatas.push(docMetadata);
+        req.docs.push(document);
+       
         await metadataStore.updateMetadataTags(req);
+        openModal = false;
+        dispatch('refreshChunks')
     }
     function handleOpenChange(isOpen: boolean) {
         openModal = isOpen; // Ensuring openModal is updated with dialog's state
@@ -67,7 +70,7 @@
 
     function closeModal() {
         openModal = false;
-        dispatch("openChange", { openModal });
+         
     }
 </script>
 

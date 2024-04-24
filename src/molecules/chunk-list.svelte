@@ -5,8 +5,11 @@
 	import BadgeList from "./badge-list.svelte";
 	import { onMount } from "svelte";
 	import ChunkDetails from "../views/chunk-details-dialog.svelte";
+    import { projects } from "../store/projectStore";
+    let isLoading = false;
 
 	export let chunks: any[] = [];
+	export let fileNames: string[] = [];
 	/**
 	 * Determines the variant of the component, which affects its styling and potentially its behavior.
 	 * - "simple" for a basic variant without additional features.
@@ -15,6 +18,18 @@
 	 * @prop {"all" | "review" | "approved"} variant - The variant type.
 	 */
 	export let variant: "all" | "review" | "approved";
+	async function refreshChunklist() {
+		isLoading = true;
+		try {
+			chunks = await projects.fetchChunksByFilenames(fileNames);
+			debugger;
+			console.log("chunk data refreshed");
+		} catch (e) {
+			console.log(e);
+		} finally {
+			isLoading = false;
+		}
+	}
 
 	function get_badge_variant_from_label(label: string) {
 		if (["work"].includes(label.toLowerCase())) {
@@ -48,9 +63,10 @@
 				{#each chunks as chunk}
 					{#each getDataPerVariant(chunk.data) as docObj}
 						<ChunkDetails
+							on:refreshChunks={refreshChunklist}
 							documentText={docObj.document}
 							tags={docObj.tags}
-							docMetadata={docObj.metadata}
+							document={docObj}
 							documentId={docObj.id}
 						>
 							<button

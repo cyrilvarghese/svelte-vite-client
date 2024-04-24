@@ -33,6 +33,9 @@
             isLoading = false;
         }
     }
+   
+
+
     onMount(() => {
         selectedFileNames.set([]);
     });
@@ -73,13 +76,13 @@
                             >
                         </Tabs.List>
                         <Tabs.Content value="all">
-                            <ChunkList {chunks} variant="all" />
+                            <ChunkList fileNames={selectedFiles} {chunks} variant="all" />
                         </Tabs.Content>
                         <Tabs.Content value="review">
-                            <ChunkList {chunks} variant="review" />
+                            <ChunkList  fileNames={selectedFiles} {chunks} variant="review" />
                         </Tabs.Content>
                         <Tabs.Content value="approved">
-                            <ChunkList {chunks} variant="approved" />
+                            <ChunkList  fileNames={selectedFiles} {chunks} variant="approved" />
                         </Tabs.Content>
                     </Tabs.Root>
                 {:else if selectedFiles.length !== 0 && chunks.length === 0}

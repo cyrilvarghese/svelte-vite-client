@@ -3,7 +3,7 @@ const BASE_URL = "http://localhost:8000/api"
 import { toast } from 'svelte-sonner';
 
 export interface MetadataUpdateRequest {
-    metadatas: string[],
+    docs: any[],
     doc_ids: string[]
 }
 
@@ -18,7 +18,7 @@ function createMetadataStore() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    metadatas: Array.isArray(requestBody.metadatas) ? requestBody.metadatas : [requestBody.metadatas],
+                    docs: Array.isArray(requestBody.docs) ? requestBody.docs : [requestBody.docs],
                     doc_ids: Array.isArray(requestBody.doc_ids) ? requestBody.doc_ids : [requestBody.doc_ids],
                 }),
             });
@@ -32,7 +32,7 @@ function createMetadataStore() {
             toast.success("Chunk Tagged Successfully!");
             // Assuming you might want to manage state, adjust as necessary
         } catch (error) {
-            console.error("Failed to update metadata:", error);
+            toast.error("Failed to update metadata:" + error)
             set([]); // Clear or handle errors as needed
             throw error;
         }

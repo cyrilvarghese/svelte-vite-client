@@ -44,7 +44,7 @@
         regenerateTags = !regenerateTags;
     }
     async function handleSubmit() {
-        debugger;
+     
         loading = true;
         let roles = selectedRoles.map((role) => {
             return +role.value;
@@ -69,7 +69,7 @@
         selectedRoles = selectedValues;
     };
     async function getAutogenResult() {
-        debugger;
+    
         loading = true;
 
         LLMRequest.topic = name;
