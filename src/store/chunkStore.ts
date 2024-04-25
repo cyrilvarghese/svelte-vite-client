@@ -4,7 +4,8 @@ import { toast } from 'svelte-sonner';
 
 export interface MetadataUpdateRequest {
     docs: any[],
-    doc_ids: string[]
+    doc_ids: string[],
+     
 }
 
 function createMetadataStore() {
@@ -24,12 +25,12 @@ function createMetadataStore() {
             });
 
             if (!response.ok) {
-                toast.error("Failed to update metadata:" + response.statusText)
+                throw new Error(`Error: ${response.statusText}`);
 
             }
 
             const result = await response.json();
-            toast.success("Chunk Tagged Successfully!");
+            toast.success("Tags Updated Successfully!");
             // Assuming you might want to manage state, adjust as necessary
         } catch (error) {
             toast.error("Failed to update metadata:" + error)

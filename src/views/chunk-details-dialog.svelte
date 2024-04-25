@@ -10,12 +10,14 @@
     import type { Tag } from "src/types";
     import type { Selected } from "bits-ui";
     import { createEventDispatcher } from "svelte";
+    import { Check, LoaderCircle } from "lucide-svelte";
     export let documentText = "";
     export let documentId = "";
     export let document: any;
     export let tags: Tag[];
 
     const dispatch = createEventDispatcher();
+    let isLoading = false;
     let openModal: boolean = false;
     let allTags: Tag[];
     tagsList.subscribe((tags) => {
@@ -24,7 +26,6 @@
     // Function to convert tag array to label-value pairs
 
     function convertTagsToSelected(tags: Tag[]): Selected<string>[] {
-        
         let convertedArr: any = tags.map((tag) => ({
             value: tag.id, // Using the tag's name as the value
             label: tag.name, // Using the tag's description as the label
@@ -48,29 +49,34 @@
     };
 
     async function updateTagMetadata() {
+        isLoading = true;
         let req: MetadataUpdateRequest = {
             docs: [],
             doc_ids: [],
+            
         };
 
         let tagsForMetadata = tags.map((tag) => {
-            return { tag_name: tag.name, score: tag.score ? tag.score : 100 };
+            debugger;
+            return {
+                tag_id: tag.id, 
+                tag_name: tag.name,
+                score: tag.score ? tag.score : 100,
+            };
         });
+        console.log("new tags --------------", tagsForMetadata);
         document.metadata.tags = JSON.stringify(tagsForMetadata);
         req.doc_ids.push(documentId);
         req.docs.push(document);
-       
+
         await metadataStore.updateMetadataTags(req);
+        isLoading = false;
+
         openModal = false;
-        dispatch('refreshChunks')
+        dispatch("refreshChunks");
     }
     function handleOpenChange(isOpen: boolean) {
         openModal = isOpen; // Ensuring openModal is updated with dialog's state
-    }
-
-    function closeModal() {
-        openModal = false;
-         
     }
 </script>
 
@@ -92,6 +98,7 @@
             multiple
             selected={convertTagsToSelected(tags)}
             onSelectedChange={handleSelectionChange}
+            disabled={isLoading}
         >
             <Select.Trigger>
                 <Select.Value placeholder="Select a tag" />
@@ -104,7 +111,16 @@
         </Select.Root>
 
         <Dialog.Footer class="flex flex-row items-start">
-            <Button on:click={updateTagMetadata}>Update Tags</Button>
+            {#if isLoading}
+                <Button class="w-[150px]" disabled>
+                    <LoaderCircle class="mr-2 h-4 w-4 animate-spin " />
+                    Please wait
+                </Button>
+            {:else}
+                <Button on:click={updateTagMetadata}>
+                    <Check class="h-4 w-4 mr-2" />Update Tags</Button
+                >
+            {/if}
         </Dialog.Footer>
     </Dialog.Content>
 </Dialog.Root>
