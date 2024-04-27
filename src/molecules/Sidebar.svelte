@@ -96,7 +96,7 @@
                                 : 'text-muted-foreground'}"
                         >
                             <BotMessageSquare class="h-4 w-4" />
-                            Test Module
+                            Playground
                         </span>
                     </Link>
                 </Router>

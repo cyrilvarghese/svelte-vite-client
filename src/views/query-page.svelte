@@ -9,6 +9,7 @@
     import ChunkContainer from "./chunks-container.svelte";
     import { activeRoute } from "../store/projectStore";
     import ProjectCombobox from "../molecules/project-combobox.svelte";
+    import SecondaryHeader from "../molecules/secondary-header.svelte";
     export let id = "";
     let isLoading = false;
     let value = 13;
@@ -32,6 +33,10 @@
                 <Progress {value} max={100} class="h-1 w-[100%]" />
             </div>
         {:else}
+            <SecondaryHeader
+                pageTitle={"Playground"}
+                pageDescription={"Playground to test RAG queries for a project"}
+            />
             <ProjectCombobox
                 on:projectSelected={(event) => {
                     let selectedProjectId = event.detail.projectId;
@@ -54,10 +59,8 @@
                     </Card.Description>
                 </Card.Header>
                 <Card.Content class="space-y-2 pb-2  ">
-                    <ScrollArea class=" h-[calc(100vh-356px)]">
-                        <div
-                            class="flex items-start justify-start rounded-lg shadow-sm"
-                        >
+                    <ScrollArea class=" h-[calc(100vh-408px)]">
+                        <div class="flex items-start justify-start">
                             <div class=" flex flex-col items-start">
                                 <FilesList {files} />
                             </div>
@@ -70,6 +73,6 @@
     </div>
     <!-- <Separator class="ml-6" orientation="vertical" /> -->
     <div class="w-[60%]">
-        <ChunkContainer projectId={+id} />
+        <ChunkContainer testMode projectId={+id} />
     </div>
 </main>

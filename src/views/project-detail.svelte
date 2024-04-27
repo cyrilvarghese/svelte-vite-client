@@ -95,6 +95,7 @@
             <SecondaryHeader
                 pageTitle={project?.name}
                 pageDescription={project?.description}
+                showBreadCrumb
             />
             <Tabs.Root value="jobs" class="w-[400px] ">
                 <Tabs.List class="grid w-full grid-cols-2">

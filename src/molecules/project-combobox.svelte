@@ -51,7 +51,7 @@
   });
 
   $: selectedValue =
-    projectsMap.find((f) => f.value === value)?.label ?? "Select a project...";
+    projectsMap.find((f) => f.value === value)?.label ?? "Search by project name...";
 
   // We want to refocus the trigger button when the user selects
   // an item from the list so users can continue navigating the
@@ -65,7 +65,7 @@
 </script>
 
 <div class="flex flex-col gap-3">
-  <Label for="files">Tags in the project</Label>
+  <Label for="files">Select Project</Label>
   <Popover.Root bind:open let:ids>
     <Popover.Trigger asChild let:builder>
       <Button
@@ -81,7 +81,7 @@
     </Popover.Trigger>
     <Popover.Content side="bottom-start" class="w-[300px] p-0">
       <Command.Root>
-        <Command.Input placeholder="Search prpject..." />
+        <Command.Input placeholder="Search project..." />
         <Command.Empty>No project found.</Command.Empty>
         <Command.Group>
           {#each projectsMap as project}
