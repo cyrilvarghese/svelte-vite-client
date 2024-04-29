@@ -15,11 +15,7 @@
         {@debug snippets}
         {#each snippets as data, index (index)}
             <div class="flex flex-row items-center">
-                <ChunkDetails
-                    documentText={data.page_content}
-                    orignalSrc={data.url_source}
-                    fileSrc={data.file_source}
-                >
+                <ChunkDetails documentText={data.page_content}>
                     <button
                         class={cn(
                             "  flex flex-col  items-start gap-2 shadow-sm  rounded-lg  p-4 text-left text-sm transition-all",

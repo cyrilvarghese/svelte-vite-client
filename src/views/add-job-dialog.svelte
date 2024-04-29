@@ -7,6 +7,8 @@
     import { onMount } from "svelte";
     const dispatch = createEventDispatcher();
     let openModal: boolean = false;
+    export let projectId = 1;
+
     function handleOpenChange(isOpen: boolean) {
         openModal = isOpen; // Ensuring openModal is updated with dialog's state
     }
@@ -31,6 +33,6 @@
             <Dialog.Description>Create a new tagging job</Dialog.Description>
         </Dialog.Header>
 
-        <AddJobForm on:closeModal={closeModal} />
+        <AddJobForm {projectId} on:closeModal={closeModal} />
     </Dialog.Content>
 </Dialog.Root>

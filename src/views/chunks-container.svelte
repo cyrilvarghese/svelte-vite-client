@@ -6,18 +6,26 @@
     import EmptyState from "../molecules/empty-state.svelte";
     import AddTagDialog from "./add-tag-dialog.svelte";
     import RetrieverResultsList from "./retriever-results-list.svelte";
-
+    import { activeRoute } from "../store/projectStore";
+    import { onDestroy } from "svelte";
     let chunks: any[];
     export let projectId: number;
-    export let testMode: boolean = false;
+    export let testMode: boolean = true;
     let isLoading = false;
     let selectedFiles: string[];
     let error: Error | any;
-
-    selectedFileNames.subscribe((filenames) => {
-        selectedFiles = filenames;
+    onMount(() => {
+        let location = window.location;
+        activeRoute.set(location.href);
+        console.log(location);
+    });
+    const unsubscribe = selectedFileNames.subscribe((filenames) => {
         if (filenames.length > 0) {
-            getChunks(filenames);
+            if (!testMode) {
+                getChunks(filenames);
+            } else if (testMode) {
+                console.log(filenames);
+            }
         } else {
             chunks = [];
         }
@@ -38,6 +46,7 @@
     onMount(() => {
         selectedFileNames.set([]);
     });
+    onDestroy(unsubscribe);
 </script>
 
 {#if !testMode}
@@ -47,7 +56,7 @@
                 <div
                     class="relative flex h-full min-h-[50vh] flex-col my-4 rounded-xl bg-muted/50 p-4 lg:col-span-2"
                 >
-                    {#if selectedFiles.length !== 0}
+                    {#if $selectedFileNames.length !== 0}
                         {#if isLoading}
                             <h2
                                 class="text-lg font-semibold text-muted-foreground md:text-xl pb-4"
@@ -79,27 +88,27 @@
                             </Tabs.List>
                             <Tabs.Content value="all">
                                 <ChunkList
-                                    fileNames={selectedFiles}
+                                    fileNames={$selectedFileNames}
                                     {chunks}
                                     variant="all"
                                 />
                             </Tabs.Content>
                             <Tabs.Content value="review">
                                 <ChunkList
-                                    fileNames={selectedFiles}
+                                    fileNames={$selectedFileNames}
                                     {chunks}
                                     variant="review"
                                 />
                             </Tabs.Content>
                             <Tabs.Content value="approved">
                                 <ChunkList
-                                    fileNames={selectedFiles}
+                                    fileNames={$selectedFileNames}
                                     {chunks}
                                     variant="approved"
                                 />
                             </Tabs.Content>
                         </Tabs.Root>
-                    {:else if selectedFiles.length !== 0 && chunks.length === 0}
+                    {:else if $selectedFileNames.length !== 0 && chunks.length === 0}
                         <div
                             class="flex-1 flex flex-col items-center justify-center"
                         ></div>

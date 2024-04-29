@@ -2,7 +2,7 @@ import { writable, type Writable } from 'svelte/store';
 
 export interface QueryRequest {
     question: string;
-    results: number;
+    fileNames: string[];
 }
 const baseUrl = 'http://localhost:8000/api';
 export interface Snippet {
@@ -26,7 +26,7 @@ function createSnippetStore() {
                 },
                 body: JSON.stringify({
                     question: queryData.question,
-                    results: queryData.results,
+                    file_names: queryData.fileNames,
                 }),
             });
             if (!response.ok) {

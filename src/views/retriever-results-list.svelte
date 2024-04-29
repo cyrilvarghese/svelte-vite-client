@@ -17,7 +17,13 @@
     import { LoaderCircle } from "lucide-svelte";
     import { Skeleton } from "$lib/components/ui/skeleton";
     import { fade } from "svelte/transition";
+    import { projects, selectedFileNames } from "../store/projectStore";
+    let selectedFiles: string[];
 
+    selectedFileNames.subscribe((filenames) => {
+        console.log(filenames);
+        selectedFiles = filenames;
+    });
     let isLoading: boolean = false;
     let question: string = "";
     let numOfresults: number = 5;
@@ -26,7 +32,7 @@
         isLoading = true;
         const request: QueryRequest = {
             question: question,
-            results: numOfresults,
+            fileNames: selectedFiles,
         };
         let response = await snippetStore.getRelevantSnippets(request);
         isLoading = false;

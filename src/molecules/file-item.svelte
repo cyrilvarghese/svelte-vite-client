@@ -4,11 +4,11 @@
     import { Label } from "$lib/components/ui/label";
     import type { File, Project } from "src/types";
     import { FileText } from "lucide-svelte";
-    import { projects } from "../store/projectStore"; // importing the store from projectStore.js
-    import { createEventDispatcher } from "svelte";
+    import { activeRoute, projects } from "../store/projectStore"; // importing the store from projectStore.js
+    import { createEventDispatcher, onMount } from "svelte";
 
     let checked: boolean | "indeterminate" | undefined = false;
-    
+
     /**
      * Determines the variant of the component, which affects its styling and potentially its behavior.
      * - "simple" for a basic variant without additional features.

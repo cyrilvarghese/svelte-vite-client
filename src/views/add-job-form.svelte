@@ -13,7 +13,7 @@
     import type { Tag } from "src/types";
     import { Toaster, toast } from "svelte-sonner";
 
-    let projectId = 1;
+    export let projectId = 1;
     let name: string = "";
     let description: string = "";
     let files: FileList | null = null;

@@ -12,7 +12,7 @@
     import { ScrollArea } from "$lib/components/ui/scroll-area";
     import FilesList from "./file-list.svelte";
     import ChunkContainer from "./chunks-container.svelte";
-    import AddJob from "./add-job-dialog.svelte";
+    import AddJobDialog from "./add-job-dialog.svelte";
     import { activeRoute } from "../store/projectStore";
     import { roles } from "../store/rolesStore";
     import { Button } from "$lib/components/ui/button";
@@ -25,7 +25,6 @@
     let error: Error | any;
 
     onMount(() => {
-       
         let location = window.location;
         activeRoute.set(location.href);
 
@@ -59,7 +58,7 @@
         isLoading = true;
         try {
             chunkList = await projects.fetchChunksByFilenames(fileNames);
- 
+
             console.log("chunk data refreshed");
         } catch (e) {
             error = e;
@@ -84,7 +83,6 @@
 </script>
 
 <main class="flex flex-row">
-     
     <div class="flex flex-1 flex-col gap-4 p-4 lg:p-6">
         {#if isLoading}
             <div class="flex flex-col items-start pl-0 p-12 h-full">
@@ -116,7 +114,8 @@
                             <Card.Description>
                                 <div class="flex flex-row justify-between">
                                     List of tagging jobs for the project
-                                    <AddJob
+                                    <AddJobDialog
+                                        projectId={+id}
                                         on:openChange={(e) => {
                                             e.detail.openModal
                                                 ? ""
@@ -204,5 +203,5 @@
         {/if}
     </div>
     <!-- <Separator class="ml-6" orientation="vertical" /> -->
-    <ChunkContainer projectId={+id} />
+    <ChunkContainer testMode={false} projectId={+id} />
 </main>
